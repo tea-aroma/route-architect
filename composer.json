@@ -1,0 +1,17 @@
+{
+    "name": "tea-aroma/route-architect",
+    "description": "Class-based route architecture for Laravel.",
+    "keywords": ["laravel", "framework", "routes", "architect"],
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "TeaAroma\\RouteArchitect\\": "src/"
+        }
+    },
+    "minimum-stability": "dev",
+    "require": {
+        "php": "^8.2",
+        "illuminate/support": "^12.0"
+    }
+}
