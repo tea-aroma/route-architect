@@ -19,3 +19,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Base configuration file for customizable behavior of this package.
 - `RouteArchitectTypes` enum encapsulating supported method types of `type` property of the `RouteArchitect` class.
 - `RouteArchitectHelpers` with base utility functions.
+
+## [0.0.3] - 2025-04-15
+
+### Added
+
+- New properties, methods, getters, and setters in the `RouteArchitect` class.
+- New helper functions in the `RouteArchitectHelpers` class.
+- `RouteArchitectConfig` for encapsulating configuration names.
+- New configuration options.

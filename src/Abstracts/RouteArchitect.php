@@ -68,6 +68,20 @@ abstract class RouteArchitect
     protected array | string | null $ignore_middlewares = null;
 
     /**
+     * The 'RouteArchitect' classes.
+     *
+     * @var class-string<RouteArchitect>[]
+     */
+    protected array $route_architects = [];
+
+    /**
+     * The variables.
+     *
+     * @var string[]
+     */
+    protected array $variables = [];
+
+    /**
      * The constructor.
      */
     public function __construct() {}
@@ -85,6 +99,16 @@ abstract class RouteArchitect
      * @return void
      */
     protected function callable(): void {}
+
+    /**
+     * Gets the url.
+     *
+     * @return string
+     */
+    public function get_url(): string
+    {
+        return '';
+    }
 
     /**
      * Gets the identifier.
@@ -209,6 +233,30 @@ abstract class RouteArchitect
     }
 
     /**
+     * Gets the class name of constructor.
+     *
+     * @return string|null
+     */
+    public function get_controller(): ?string
+    {
+        return $this->controller;
+    }
+
+    /**
+     * Sets the given class name of constructor.
+     *
+     * @param string $controller
+     *
+     * @return static
+     */
+    public function set_controller(string $controller): static
+    {
+        $this->controller = $controller;
+
+        return $this;
+    }
+
+    /**
      * Gets the middleware(s).
      *
      * @return class-string|class-string[]|null
@@ -319,6 +367,80 @@ abstract class RouteArchitect
     }
 
     /**
+     * Gets the 'RouteArchitects' classes.
+     *
+     * @return string-class<RouteArchitect>[]
+     */
+    public function get_route_architects(): array
+    {
+        return $this->route_architects;
+    }
+
+    /**
+     * Sets the given 'RouteArchitects' classes.
+     *
+     * @param class-string<RouteArchitect>[] $route_architects
+     *
+     * @return static
+     */
+    public function set_route_architects(array $route_architects): static
+    {
+        $this->route_architects = $route_architects;
+
+        return $this;
+    }
+
+    /**
+     * Appends one or more 'RouteArchitect' class to the existing list.
+     *
+     * @param class-string<RouteArchitect>[]|class-string<RouteArchitect> $route_architects
+     *
+     * @return static
+     */
+    public function add_route_architect(array | string $route_architects): static
+    {
+        $this->route_architects = array_merge($this->route_architects, (array) $route_architects);
+
+        return $this;
+    }
+
+    /**
+     * Gets the variables.
+     *
+     * @return string[]
+     */
+    public function get_variables(): array
+    {
+        return $this->variables;
+    }
+
+    /**
+     * Sets the given variables.
+     *
+     * @param string[] $variables
+     *
+     * @return void
+     */
+    public function set_variables(array $variables): void
+    {
+        $this->variables = $variables;
+    }
+
+    /**
+     * Appends one or more variable to the existing list.
+     *
+     * @param string[]|string $variables
+     *
+     * @return $this
+     */
+    public function add_variable(array | string $variables): static
+    {
+        $this->variables = array_merge($this->variables, (array) $variables);
+
+        return $this;
+    }
+
+    /**
      * Determines whether there an action.
      *
      * @return bool
@@ -329,7 +451,27 @@ abstract class RouteArchitect
     }
 
     /**
-     * Determines whether there are any middlewares for this route.
+     * Determines whether there are any 'RouteArchitect'.
+     *
+     * @return bool
+     */
+    public function has_route_architects(): bool
+    {
+        return !empty($this->route_architects);
+    }
+
+    /**
+     * Determines whether there are any variables.
+     *
+     * @return bool
+     */
+    public function has_variables(): bool
+    {
+        return !empty($this->variables);
+    }
+
+    /**
+     * Determines whether there are any middlewares.
      *
      * @return bool
      */
@@ -339,7 +481,7 @@ abstract class RouteArchitect
     }
 
     /**
-     * Determines whether there are any middlewares to ignore for this route.
+     * Determines whether there are any middlewares to ignore.
      *
      * @return bool
      */

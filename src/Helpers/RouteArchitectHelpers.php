@@ -5,6 +5,7 @@ namespace TeaAroma\RouteArchitect\Helpers;
 
 use TeaAroma\RouteArchitect\Abstracts\RouteArchitect;
 use TeaAroma\RouteArchitect\Callables\IsNotMiddleware;
+use TeaAroma\RouteArchitect\Enums\RouteArchitectConfig;
 
 
 /**
@@ -49,4 +50,49 @@ class RouteArchitectHelpers
     {
         return !$route_architect->has_action();
     }
+	
+	/**
+	 * Converts the variables of the given 'RouteArchitect' class to string.
+	 *
+	 * [ 'id' ] => ...{id}
+	 *
+	 * [ 'posts' => 'id_post' ] => ...posts/{id_post}
+	 *
+	 * @param string[] $variables
+	 *
+	 * @return string
+	 */
+	static public function variables_to_string(array $variables): string
+	{
+		$string = '';
+		
+		foreach ($variables as $key => $variable)
+		{
+			if (!empty($string))
+			{
+				$string .= self::get_config(RouteArchitectConfig::URL_DELIMITER);
+			}
+			
+			if (!array_is_list($variables))
+			{
+				$string .= $key . self::get_config(RouteArchitectConfig::URL_DELIMITER);
+			}
+			
+			$string .= sprintf(self::get_config(RouteArchitectConfig::URL_VARIABLE_TEMPLATE), $variable);
+		}
+		
+		return $string;
+	}
+	
+	/**
+	 * Gets the config value by the given case of enum.
+	 *
+	 * @param RouteArchitectConfig $config
+	 *
+	 * @return mixed
+	 */
+	static public function get_config(RouteArchitectConfig $config): mixed
+	{
+		return config('route-architect.' . $config->value);
+	}
 }
