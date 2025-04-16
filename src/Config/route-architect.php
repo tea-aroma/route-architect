@@ -45,4 +45,15 @@ return [
 	*/
 	
 	'url_segment_delimiter' => env('ROUTE_ARCHITECT_URL_SEGMENT_DELIMITER', '-'),
+	
+	/*
+	|--------------------------------------------------------------------------
+	| Route Name Delimiter
+	|--------------------------------------------------------------------------
+	|
+	| Separator between name of route segments.
+	|
+	*/
+	
+	'route_name_delimiter' => env('ROUTE_ARCHITECT_ROUTE_NAME_DELIMITER', '.'),
 ];

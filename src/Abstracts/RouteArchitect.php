@@ -3,6 +3,8 @@
 namespace TeaAroma\RouteArchitect\Abstracts;
 
 
+use Illuminate\Support\Collection;
+use TeaAroma\RouteArchitect\Classes\RouteArchitectSequences;
 use TeaAroma\RouteArchitect\Enums\RouteArchitectTypes;
 
 
@@ -80,13 +82,24 @@ abstract class RouteArchitect
      * @var string[]
      */
     protected array $variables = [];
-
-    /**
-     * The constructor.
-     */
-    public function __construct() {}
-
-    /**
+	
+	
+	/**
+	 * The sequences.
+	 *
+	 * @var RouteArchitectSequences
+	 */
+	static protected RouteArchitectSequences $sequences;
+	
+	/**
+	 * The constructor.
+	 */
+	public function __construct()
+	{
+		self::$sequences ??= new RouteArchitectSequences();
+	}
+	
+	/**
      * Defines and registers the route.
      *
      * @return void
@@ -439,6 +452,27 @@ abstract class RouteArchitect
 
         return $this;
     }
+	
+	
+	/**
+	 * Gets the sequences.
+	 *
+	 * @return Collection<class-string<RouteArchitect>, string>
+	 */
+	public static function get_sequences(): Collection
+	{
+		return self::$sequences->get_sequences();
+	}
+	
+	/**
+	 * Gets the sequence by the given 'RouteArchitect' namespace.
+	 *
+	 * @return class-string<RouteArchitect>
+	 */
+	public static function get_sequence(string $namespace): string
+	{
+		return self::$sequences->get_sequence_by_namespace($namespace);
+	}
 
     /**
      * Determines whether there an action.
@@ -451,7 +485,7 @@ abstract class RouteArchitect
     }
 
     /**
-     * Determines whether there are any 'RouteArchitect'.
+     * Determines whether there are any 'RouteArchitect' class.
      *
      * @return bool
      */
@@ -489,4 +523,14 @@ abstract class RouteArchitect
     {
         return !empty($this->ignore_middlewares);
     }
+	
+	/**
+	 * Gets the namespace.
+	 *
+	 * @return string
+	 */
+	public function get_namespace(): string
+	{
+		return $this::class;
+	}
 }

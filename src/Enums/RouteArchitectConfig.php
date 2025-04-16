@@ -15,4 +15,6 @@ enum RouteArchitectConfig: string
     case URL_DELIMITER = 'url_delimiter';
 
     case URL_SEGMENT_DELIMITER = 'url_segment_delimiter';
+	
+	case ROUTE_NAME_DELIMITER = 'route_name_delimiter';
 }

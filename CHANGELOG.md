@@ -28,3 +28,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - New helper functions in the `RouteArchitectHelpers` class.
 - `RouteArchitectConfig` for encapsulating configuration names.
 - New configuration options.
+
+## [0.0.4] - 2025-04-16
+
+### Added
+
+- New properties and methods in the `RouteArchitect` class.
+- New properties in the `RouteArchitectConfig` enum.
+- Class `RouteArchitectSequences` for working with the sequence of `RouteArchitect` classes.
+- New configuration options.
