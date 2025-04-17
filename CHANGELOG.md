@@ -37,3 +37,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - New properties in the `RouteArchitectConfig` enum.
 - Class `RouteArchitectSequences` for working with the sequence of `RouteArchitect` classes.
 - New configuration options.
+
+## [0.0.5] - 2025-04-17
+
+### Added
+
+- New properties, logic and methods in the `RouteArchitect` class.
+
+### Changed
+
+- Refactored methods accessing the collection in the `RouteArchitectSequences` class.
+- Reordered methods in the `RouteArchitect` class for better organization.
