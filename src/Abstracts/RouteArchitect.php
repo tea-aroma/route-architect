@@ -5,7 +5,9 @@ namespace TeaAroma\RouteArchitect\Abstracts;
 
 use Illuminate\Support\Collection;
 use TeaAroma\RouteArchitect\Classes\RouteArchitectSequences;
+use TeaAroma\RouteArchitect\Enums\RouteArchitectConfig;
 use TeaAroma\RouteArchitect\Enums\RouteArchitectTypes;
+use TeaAroma\RouteArchitect\Helpers\RouteArchitectHelpers;
 
 
 /**
@@ -54,7 +56,14 @@ abstract class RouteArchitect
      * @var class-string|null
      */
     protected ?string $controller = null;
-
+	
+	/**
+	 * The custom url.
+	 *
+	 * @var string|null
+	 */
+	protected ?string $custom_url = null;
+	
     /**
      * The middleware(s).
      *
@@ -82,7 +91,6 @@ abstract class RouteArchitect
      * @var string[]
      */
     protected array $variables = [];
-	
 	
 	/**
 	 * The sequences.
@@ -120,7 +128,18 @@ abstract class RouteArchitect
      */
     public function get_url(): string
     {
-        return '';
+	    if ($this->has_custom_url())
+	    {
+		    return $this->get_custom_url();
+	    }
+	    
+	    $url_delimiter = RouteArchitectHelpers::get_config(RouteArchitectConfig::URL_DELIMITER);
+	    
+	    $route_name_delimiter = RouteArchitectHelpers::get_config(RouteArchitectConfig::ROUTE_NAME_DELIMITER);
+	    
+	    $regular_expression = '/' . addcslashes($route_name_delimiter, $route_name_delimiter) . '/';
+		
+	    return $url_delimiter . preg_replace($regular_expression, $url_delimiter, self::$sequences->get_sequence($this));
     }
 
     /**
@@ -146,6 +165,16 @@ abstract class RouteArchitect
 
         return $this;
     }
+	
+	/**
+	 * Determines whether the identifier exists.
+	 *
+	 * @return bool
+	 */
+	public function has_identifier(): bool
+	{
+		return !empty($this->identifier);
+	}
 
     /**
      * Gets the name of route.
@@ -172,6 +201,16 @@ abstract class RouteArchitect
 
         return $this;
     }
+	
+	/**
+	 * Determines whether the name of route exists.
+	 *
+	 * @return bool
+	 */
+	public function has_name(): bool
+	{
+		return !empty($this->name);
+	}
 
     /**
      * Gets the name of view.
@@ -198,6 +237,16 @@ abstract class RouteArchitect
 
         return $this;
     }
+	
+	/**
+	 * Determines whether the name of view exists.
+	 *
+	 * @return bool
+	 */
+	public function has_view(): bool
+	{
+		return !empty($this->view);
+	}
 
     /**
      * Gets the type of method.
@@ -222,6 +271,16 @@ abstract class RouteArchitect
 
         return $this;
     }
+	
+	/**
+	 * Determines whether the type exists.
+	 *
+	 * @return bool
+	 */
+	public function has_type(): bool
+	{
+		return !empty($this->type);
+	}
 
     /**
      * Gets the action.
@@ -278,6 +337,50 @@ abstract class RouteArchitect
 
         return $this;
     }
+	
+	/**
+	 * Determines whether the controller exists.
+	 *
+	 * @return bool
+	 */
+	public function has_controller(): bool
+	{
+		return !empty($this->controller);
+	}
+	
+	/**
+	 * Gets the custom url.
+	 *
+	 * @return string|null
+	 */
+	public function get_custom_url(): ?string
+	{
+		return $this->custom_url;
+	}
+	
+	/**
+	 * Sets the given custom url.
+	 *
+	 * @param string|null $custom_url
+	 *
+	 * @return static
+	 */
+	public function set_custom_url(?string $custom_url): static
+	{
+		$this->custom_url = $custom_url;
+		
+		return $this;
+	}
+	
+	/**
+	 * Determines whether the custom url exists.
+	 *
+	 * @return bool
+	 */
+	public function has_custom_url(): bool
+	{
+		return !empty($this->custom_url);
+	}
 
     /**
      * Gets the middleware(s).
