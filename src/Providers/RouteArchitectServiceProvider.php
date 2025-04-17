@@ -20,4 +20,12 @@ class RouteArchitectServiceProvider extends ServiceProvider
 	{
 		$this->publishes([ __DIR__ . '/../Config/route-architect.php' => config_path('route-architect.php') ], 'config');
 	}
+	
+	/**
+	 * @return void
+	 */
+	public function register(): void
+	{
+		$this->mergeConfigFrom(__DIR__ . '/../Config/route-architect.php', 'route-architect');
+	}
 }
