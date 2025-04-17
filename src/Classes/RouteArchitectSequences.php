@@ -48,7 +48,7 @@ class RouteArchitectSequences
      */
     public function get_sequence(RouteArchitect $route_architect): string
     {
-        return $this->sequences[ $route_architect->get_namespace() ] ?? '';
+        return $this->sequences->get($route_architect->get_namespace()) ?? '';
     }
 
     /**
@@ -60,7 +60,7 @@ class RouteArchitectSequences
      */
     public function get_sequence_by_namespace(string $route_architect): string
     {
-        return $this->sequences[ $route_architect ] ?? '';
+        return $this->sequences->get($route_architect) ?? '';
     }
 
     /**
@@ -72,7 +72,7 @@ class RouteArchitectSequences
      */
     public function has_sequence(RouteArchitect $route_architect): string
     {
-        return isset($this->sequences[ $route_architect->get_namespace() ]);
+        return $this->sequences->has($route_architect->get_namespace());
     }
 
     /**
@@ -89,7 +89,7 @@ class RouteArchitectSequences
             return;
         }
 
-        $this->sequences[ $route_architect->get_namespace() ] = $route_architect->get_name();
+        $this->sequences->put($route_architect->get_namespace(), $route_architect->get_name());
     }
 
     /**
@@ -104,6 +104,8 @@ class RouteArchitectSequences
     {
         $this->add_base_sequence($route_architect);
 
-        $this->sequences[ $nested_route_architect->get_namespace() ] = $this->get_sequence($route_architect) . RouteArchitectHelpers::get_config(RouteArchitectConfig::ROUTE_NAME_DELIMITER) . $nested_route_architect->get_name();
+        $route_name_delimiter = RouteArchitectHelpers::get_config(RouteArchitectConfig::ROUTE_NAME_DELIMITER);
+
+        $this->sequences->put($nested_route_architect->get_namespace(), $this->get_sequence($route_architect) . $route_name_delimiter . $nested_route_architect->get_name());
     }
 }

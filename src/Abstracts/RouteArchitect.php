@@ -244,7 +244,17 @@ abstract class RouteArchitect
     {
         $this->action = $action;
     }
-
+	
+	/**
+	 * Determines whether there an action.
+	 *
+	 * @return bool
+	 */
+	public function has_action(): bool
+	{
+		return !empty($this->action);
+	}
+	
     /**
      * Gets the class name of constructor.
      *
@@ -323,6 +333,16 @@ abstract class RouteArchitect
 
         return $this;
     }
+	
+	/**
+	 * Determines whether there are any middlewares.
+	 *
+	 * @return bool
+	 */
+	public function has_middlewares(): bool
+	{
+		return !empty($this->middlewares);
+	}
 
     /**
      * Gets the middleware(s) to ignore.
@@ -378,7 +398,17 @@ abstract class RouteArchitect
 
         return $this;
     }
-
+	
+	/**
+	 * Determines whether there are any middlewares to ignore.
+	 *
+	 * @return bool
+	 */
+	public function has_ignore_middlewares(): bool
+	{
+		return !empty($this->ignore_middlewares);
+	}
+	
     /**
      * Gets the 'RouteArchitects' classes.
      *
@@ -416,7 +446,17 @@ abstract class RouteArchitect
 
         return $this;
     }
-
+	
+	/**
+	 * Determines whether there are any 'RouteArchitect' class.
+	 *
+	 * @return bool
+	 */
+	public function has_route_architects(): bool
+	{
+		return !empty($this->route_architects);
+	}
+	
     /**
      * Gets the variables.
      *
@@ -453,6 +493,15 @@ abstract class RouteArchitect
         return $this;
     }
 	
+	/**
+	 * Determines whether there are any variables.
+	 *
+	 * @return bool
+	 */
+	public function has_variables(): bool
+	{
+		return !empty($this->variables);
+	}
 	
 	/**
 	 * Gets the sequences.
@@ -473,56 +522,6 @@ abstract class RouteArchitect
 	{
 		return self::$sequences->get_sequence_by_namespace($namespace);
 	}
-
-    /**
-     * Determines whether there an action.
-     *
-     * @return bool
-     */
-    public function has_action(): bool
-    {
-        return !empty($this->action);
-    }
-
-    /**
-     * Determines whether there are any 'RouteArchitect' class.
-     *
-     * @return bool
-     */
-    public function has_route_architects(): bool
-    {
-        return !empty($this->route_architects);
-    }
-
-    /**
-     * Determines whether there are any variables.
-     *
-     * @return bool
-     */
-    public function has_variables(): bool
-    {
-        return !empty($this->variables);
-    }
-
-    /**
-     * Determines whether there are any middlewares.
-     *
-     * @return bool
-     */
-    public function has_middlewares(): bool
-    {
-        return !empty($this->middlewares);
-    }
-
-    /**
-     * Determines whether there are any middlewares to ignore.
-     *
-     * @return bool
-     */
-    public function has_ignore_middlewares(): bool
-    {
-        return !empty($this->ignore_middlewares);
-    }
 	
 	/**
 	 * Gets the namespace.
