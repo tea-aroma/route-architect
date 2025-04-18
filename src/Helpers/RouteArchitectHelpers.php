@@ -13,43 +13,47 @@ use TeaAroma\RouteArchitect\Enums\RouteArchitectConfig;
  */
 class RouteArchitectHelpers
 {
-    /**
-     * Determines whether the given input is (or consists of) valid middleware.
-     *
-     * If input is an array, returns true only if all items are valid middleware.
-     *
-     * @param class-string|class-string[] $middleware
-     *
-     * @return bool
-     */
-    static public function is_middleware(string | array $middleware): bool
-    {
-        if (is_array($middleware))
-        {
-            if (empty($middleware))
-            {
-                return false;
-            }
-
-            $filter = array_filter($middleware, new IsNotMiddleware);
-
-            return empty($filter);
-        }
-
-        return method_exists($middleware, 'handle');
-    }
-
-    /**
-     * Determines whether the give RouteArchitect is a group.
-     *
-     * @param RouteArchitect $route_architect
-     *
-     * @return bool
-     */
-    static public function is_group_route(RouteArchitect $route_architect): bool
-    {
-        return !$route_architect->has_action();
-    }
+	/**
+	 * Determines whether the given input is (or consists of) valid middleware.
+	 *
+	 * If input is an array, returns true only if all items are valid middleware.
+	 *
+	 * @param class-string|class-string[] $middleware
+	 *
+	 * @return bool
+	 */
+	static public function is_middleware(string | array $middleware): bool
+	{
+		if (is_array($middleware))
+		{
+			if (empty($middleware))
+			{
+				return false;
+			}
+			
+			$filter = array_filter($middleware, new IsNotMiddleware);
+			
+			return empty($filter);
+		}
+		
+		return method_exists($middleware, 'handle');
+	}
+	
+	/**
+	 * @deprecated
+	 *
+	 * @see RouteArchitect::is_group()
+	 *
+	 * Determines whether the give RouteArchitect is a group.
+	 *
+	 * @param RouteArchitect $route_architect
+	 *
+	 * @return bool
+	 */
+	static public function is_group_route(RouteArchitect $route_architect): bool
+	{
+		return !$route_architect->has_action();
+	}
 	
 	/**
 	 * Converts the variables of the given 'RouteArchitect' class to string.
@@ -70,21 +74,25 @@ class RouteArchitectHelpers
 		{
 			if (!empty($string))
 			{
-				$string .= self::get_config(RouteArchitectConfig::URL_DELIMITER);
+				$string .= RouteArchitectConfig::URL_DELIMITER->get_config();
 			}
 			
 			if (!array_is_list($variables))
 			{
-				$string .= $key . self::get_config(RouteArchitectConfig::URL_DELIMITER);
+				$string .= $key . RouteArchitectConfig::URL_DELIMITER->get_config();
 			}
 			
-			$string .= sprintf(self::get_config(RouteArchitectConfig::URL_VARIABLE_TEMPLATE), $variable);
+			$string .= sprintf(RouteArchitectConfig::URL_VARIABLE_TEMPLATE->get_config(), $variable);
 		}
 		
 		return $string;
 	}
 	
 	/**
+	 * @deprecated
+	 *
+	 * @see RouteArchitectConfig::get_config()
+	 *
 	 * Gets the config value by the given case of enum.
 	 *
 	 * @param RouteArchitectConfig $config
