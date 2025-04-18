@@ -56,4 +56,15 @@ return [
 	*/
 	
 	'route_name_delimiter' => env('ROUTE_ARCHITECT_ROUTE_NAME_DELIMITER', '.'),
+	
+	/*
+	|--------------------------------------------------------------------------
+	| Action Delimiter
+	|--------------------------------------------------------------------------
+	|
+	| Separator between namespace of a class and an action name.
+	|
+	*/
+	
+	'action_delimiter' => env('ROUTE_ARCHITECT_ACTION_DELIMITER', '@'),
 ];

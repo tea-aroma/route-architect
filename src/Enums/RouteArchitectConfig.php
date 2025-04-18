@@ -17,4 +17,16 @@ enum RouteArchitectConfig: string
     case URL_SEGMENT_DELIMITER = 'url_segment_delimiter';
 	
 	case ROUTE_NAME_DELIMITER = 'route_name_delimiter';
+	
+	case ACTION_DELIMITER = 'action_delimiter';
+	
+	/**
+	 * Gets the value from configurations.
+	 *
+	 * @return string
+	 */
+	public function get_config(): string
+	{
+		return config('route-architect.' . $this->value);
+	}
 }
