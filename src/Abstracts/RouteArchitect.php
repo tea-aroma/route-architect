@@ -3,11 +3,12 @@
 namespace TeaAroma\RouteArchitect\Abstracts;
 
 
-use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 use TeaAroma\RouteArchitect\Classes\RouteArchitectSequences;
 use TeaAroma\RouteArchitect\Enums\RouteArchitectConfig;
+use TeaAroma\RouteArchitect\Enums\RouteArchitectErrors;
+use TeaAroma\RouteArchitect\Enums\RouteArchitectSequenceTypes;
 use TeaAroma\RouteArchitect\Enums\RouteArchitectTypes;
-use TeaAroma\RouteArchitect\Helpers\RouteArchitectHelpers;
 
 
 /**
@@ -35,6 +36,13 @@ abstract class RouteArchitect
      * @var string|null
      */
     protected ?string $view = null;
+	
+	/**
+     * The prefix.
+     *
+     * @var string|null
+     */
+    protected ?string $prefix = null;
 
     /**
      * The type of method.
@@ -93,33 +101,66 @@ abstract class RouteArchitect
     protected array $variables = [];
 	
 	/**
-	 * The sequences.
+	 * The sequences of names.
 	 *
 	 * @var RouteArchitectSequences
 	 */
-	static protected RouteArchitectSequences $sequences;
+	static protected RouteArchitectSequences $name_sequences;
+	
+	/**
+	 * The sequences of views.
+	 *
+	 * @var RouteArchitectSequences
+	 */
+	static protected RouteArchitectSequences $view_sequences;
 	
 	/**
 	 * The constructor.
 	 */
 	public function __construct()
 	{
-		self::$sequences ??= new RouteArchitectSequences();
+		self::$name_sequences ??= new RouteArchitectSequences(RouteArchitectSequenceTypes::NAMES);
+		
+		self::$view_sequences ??= new RouteArchitectSequences(RouteArchitectSequenceTypes::VIEWS);
 	}
 	
 	/**
-     * Defines and registers the route.
-     *
-     * @return void
-     */
-    public function declare(): void {}
+	 * Defines and registers the route.
+	 *
+	 * @return void
+	 */
+    public function register(): void {}
 
     /**
      * Callback method to be executed when property 'action' is null.
      *
      * @return void
      */
-    protected function callable(): void {}
+    protected function callable(): void
+    {
+		throw new \LogicException(RouteArchitectErrors::METHOD_NOT_OVERIDE->format(__FUNCTION__, static::class));
+    }
+	
+	/**
+	 * Gets the 'Closure' of the 'callable' method.
+	 *
+	 * @return \Closure
+	 */
+	public function get_callable(): \Closure
+	{
+		try
+		{
+			$closure = (new \ReflectionMethod($this, 'callable'))->getClosure($this);
+		}
+		catch (\ReflectionException $exception)
+		{
+			Log::error(RouteArchitectErrors::UNDEFINED_CLOSURE->format(__FUNCTION__), [ 'exception' => $exception ]);
+			
+			$closure = fn () => null;
+		}
+		
+		return $closure;
+	}
 
     /**
      * Gets the url.
@@ -133,13 +174,13 @@ abstract class RouteArchitect
 		    return $this->get_custom_url();
 	    }
 	    
-	    $url_delimiter = RouteArchitectHelpers::get_config(RouteArchitectConfig::URL_DELIMITER);
+	    $url_delimiter = RouteArchitectConfig::URL_DELIMITER->get_config();
 	    
-	    $route_name_delimiter = RouteArchitectHelpers::get_config(RouteArchitectConfig::ROUTE_NAME_DELIMITER);
+	    $route_name_delimiter = RouteArchitectConfig::ROUTE_NAME_DELIMITER->get_config();
 	    
 	    $regular_expression = '/' . addcslashes($route_name_delimiter, $route_name_delimiter) . '/';
 		
-	    return $url_delimiter . preg_replace($regular_expression, $url_delimiter, self::$sequences->get_sequence($this));
+	    return $url_delimiter . preg_replace($regular_expression, $url_delimiter, $this->get_name());
     }
 
     /**
@@ -247,7 +288,43 @@ abstract class RouteArchitect
 	{
 		return !empty($this->view);
 	}
-
+	
+	/**
+	 * Gets the prefix.
+	 *
+	 * If the property 'prefix' is empty - the 'identifier' property will be returned.
+	 *
+	 * @return string
+	 */
+	public function get_prefix(): string
+	{
+		return $this->prefix ?? $this->identifier;
+	}
+	
+	/**
+	 * Sets the given prefix.
+	 *
+	 * @param string $prefix
+	 *
+	 * @return $this
+	 */
+	public function set_prefix(string $prefix): static
+	{
+		$this->prefix = $prefix;
+		
+		return $this;
+	}
+	
+	/**
+	 * Determines whether the prefix exists.
+	 *
+	 * @return bool
+	 */
+	public function has_prefix(): bool
+	{
+		return !empty($this->prefix);
+	}
+	
     /**
      * Gets the type of method.
      *
@@ -289,19 +366,31 @@ abstract class RouteArchitect
      */
     public function get_action(): array | string | null
     {
+		if (!$this->has_action())
+		{
+			return null;
+		}
+		
+		if ($this->has_controller() && is_string($this->action))
+		{
+			return $this->get_controller() . RouteArchitectConfig::ACTION_DELIMITER->get_config() . $this->action;
+		}
+		
         return $this->action;
     }
-
-    /**
-     * Sets the given action.
-     *
-     * @param array<class-string, string>|string $action
-     *
-     * @return void
-     */
-    public function set_action(array | string $action): void
+	
+	/**
+	 * Sets the given action.
+	 *
+	 * @param array<class-string, string>|string $action
+	 *
+	 * @return static
+	 */
+    public function set_action(array | string $action): static
     {
         $this->action = $action;
+		
+		return $this;
     }
 	
 	/**
@@ -361,11 +450,11 @@ abstract class RouteArchitect
 	/**
 	 * Sets the given custom url.
 	 *
-	 * @param string|null $custom_url
+	 * @param string $custom_url
 	 *
 	 * @return static
 	 */
-	public function set_custom_url(?string $custom_url): static
+	public function set_custom_url(string $custom_url): static
 	{
 		$this->custom_url = $custom_url;
 		
@@ -607,23 +696,23 @@ abstract class RouteArchitect
 	}
 	
 	/**
-	 * Gets the sequences.
+	 * Gets sequences of names.
 	 *
-	 * @return Collection<class-string<RouteArchitect>, string>
+	 * @return RouteArchitectSequences
 	 */
-	public static function get_sequences(): Collection
+	public static function get_name_sequences(): RouteArchitectSequences
 	{
-		return self::$sequences->get_sequences();
+		return self::$name_sequences;
 	}
 	
 	/**
-	 * Gets the sequence by the given 'RouteArchitect' namespace.
+	 * Gets sequences of views.
 	 *
-	 * @return class-string<RouteArchitect>
+	 * @return RouteArchitectSequences
 	 */
-	public static function get_sequence(string $namespace): string
+	public static function get_view_sequences(): RouteArchitectSequences
 	{
-		return self::$sequences->get_sequence_by_namespace($namespace);
+		return self::$view_sequences;
 	}
 	
 	/**
@@ -634,5 +723,15 @@ abstract class RouteArchitect
 	public function get_namespace(): string
 	{
 		return $this::class;
+	}
+	
+	/**
+	 * Determines whether the current instance is a group.
+	 *
+	 * @return string
+	 */
+	public function is_group(): string
+	{
+		return $this->has_route_architects();
 	}
 }
