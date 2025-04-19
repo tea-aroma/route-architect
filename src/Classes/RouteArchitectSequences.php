@@ -67,13 +67,11 @@ class RouteArchitectSequences
 	 */
 	protected function get_method_name(): RouteArchitectMethodNames
 	{
-		$values =
-			[
-				RouteArchitectSequenceTypes::NAMES->name => RouteArchitectMethodNames::GET_NAME,
-				RouteArchitectSequenceTypes::VIEWS->name => RouteArchitectMethodNames::GET_VIEW,
-			];
-		
-		return $values[ $this->type->name ];
+		return match ($this->type->name)
+		{
+			RouteArchitectSequenceTypes::NAMES->name => RouteArchitectMethodNames::GET_NAME,
+			RouteArchitectSequenceTypes::VIEWS->name => RouteArchitectMethodNames::GET_VIEW,
+		};
 	}
 	
 	/**
