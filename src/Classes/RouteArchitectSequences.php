@@ -163,7 +163,7 @@ class RouteArchitectSequences
 	 */
 	public function has_sequence(RouteArchitect $route_architect): bool
 	{
-		return $this->sequences->contains($route_architect->get_namespace());
+		return $this->sequences->has($route_architect->get_namespace());
 	}
 	
 	/**
@@ -175,7 +175,7 @@ class RouteArchitectSequences
 	 */
 	public function has_sequence_by_namespace(string $namespace): bool
 	{
-		return $this->sequences->contains($namespace);
+		return $this->sequences->has($namespace);
 	}
 	
 	/**
