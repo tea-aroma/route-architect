@@ -3,7 +3,9 @@
 namespace TeaAroma\RouteArchitect\Abstracts;
 
 
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
+use TeaAroma\RouteArchitect\Classes\RouteArchitectMiddlewares;
 use TeaAroma\RouteArchitect\Classes\RouteArchitectSequences;
 use TeaAroma\RouteArchitect\Enums\RouteArchitectConfig;
 use TeaAroma\RouteArchitect\Enums\RouteArchitectErrors;
@@ -75,16 +77,30 @@ abstract class RouteArchitect
     /**
      * The middleware(s).
      *
-     * @var class-string[]|class-string|null
+     * @var class-string[]
      */
-    protected array | string | null $middlewares = null;
+    protected array $middlewares = [];
+
+	/**
+     * The manager of the middleware(s).
+     *
+     * @var RouteArchitectMiddlewares
+     */
+    private RouteArchitectMiddlewares $middlewares_manager;
 
     /**
      * The middleware(s) to ignore.
      *
-     * @var class-string[]|class-string|null
+     * @var class-string[]
      */
-    protected array | string | null $ignore_middlewares = null;
+    protected array $ignore_middlewares = [];
+
+	/**
+     * The manager of the middleware(s) to ignore.
+     *
+     * @var RouteArchitectMiddlewares
+     */
+    private RouteArchitectMiddlewares $ignore_middlewares_manager;
 
     /**
      * The 'RouteArchitect' classes.
@@ -122,6 +138,10 @@ abstract class RouteArchitect
 		self::$name_sequences ??= new RouteArchitectSequences(RouteArchitectSequenceTypes::NAMES);
 		
 		self::$view_sequences ??= new RouteArchitectSequences(RouteArchitectSequenceTypes::VIEWS);
+
+		$this->middlewares_manager ??= new RouteArchitectMiddlewares($this->middlewares);
+
+		$this->ignore_middlewares_manager ??= new RouteArchitectMiddlewares($this->ignore_middlewares);
 	}
 	
 	/**
@@ -474,23 +494,23 @@ abstract class RouteArchitect
     /**
      * Gets the middleware(s).
      *
-     * @return class-string|class-string[]|null
+     * @return Collection<class-string>
      */
-    public function get_middlewares(): array | string | null
+    public function get_middlewares(): Collection
     {
-        return $this->middlewares;
+        return $this->middlewares_manager->get_middlewares();
     }
 
     /**
      * Sets the given middleware(s).
      *
-     * @param class-string[]|class-string $middlewares
+     * @param Collection<class-string> $middlewares
      *
      * @return static
      */
-    public function set_middlewares(array | string $middlewares): static
+    public function set_middlewares(Collection $middlewares): static
     {
-        $this->middlewares = $middlewares;
+        $this->middlewares_manager->set_middlewares($middlewares);
 
         return $this;
     }
@@ -504,28 +524,11 @@ abstract class RouteArchitect
      */
     public function add_middleware(array | string $middleware): static
     {
-        if (!$this->has_middlewares())
-        {
-            $this->middlewares = $middleware;
-
-            return $this;
-        }
-
-        if (is_array($this->middlewares))
-        {
-            $this->middlewares = array_merge($this->middlewares, (array) $middleware);
-
-            return $this;
-        }
-
-        if (is_string($this->middlewares))
-        {
-            $this->middlewares = [ $this->middlewares, ...( (array) $middleware ) ];
-        }
+		$this->middlewares_manager->add_middlewares($middleware);
 
         return $this;
     }
-	
+
 	/**
 	 * Determines whether there are any middlewares.
 	 *
@@ -533,29 +536,29 @@ abstract class RouteArchitect
 	 */
 	public function has_middlewares(): bool
 	{
-		return !empty($this->middlewares);
+		return !$this->middlewares_manager->is_empty();
 	}
 
     /**
      * Gets the middleware(s) to ignore.
      *
-     * @return class-string[]|class-string|null
+     * @return Collection<class-string>
      */
-    public function get_ignore_middlewares(): array | string | null
+    public function get_ignore_middlewares(): Collection
     {
-        return $this->ignore_middlewares;
+        return $this->ignore_middlewares_manager->get_middlewares();
     }
 
     /**
      * Sets the given middleware(s) to ignore.
      *
-     * @param class-string[]|class-string $ignore_middlewares
+     * @param Collection<class-string> $middlewares
      *
      * @return static
      */
-    public function set_ignore_middlewares(array | string $ignore_middlewares): static
+    public function set_ignore_middlewares(Collection $middlewares): static
     {
-        $this->ignore_middlewares = $ignore_middlewares;
+        $this->ignore_middlewares_manager->set_middlewares($middlewares);
 
         return $this;
     }
@@ -569,28 +572,11 @@ abstract class RouteArchitect
      */
     public function add_ignore_middleware(array | string $middleware): static
     {
-        if (!$this->has_ignore_middlewares())
-        {
-            $this->ignore_middlewares = $middleware;
-
-            return $this;
-        }
-
-        if (is_array($this->ignore_middlewares))
-        {
-            $this->ignore_middlewares = array_merge($this->ignore_middlewares, (array) $middleware);
-
-            return $this;
-        }
-
-        if (is_string($this->ignore_middlewares))
-        {
-            $this->ignore_middlewares = [ $this->ignore_middlewares, ...( (array) $middleware ) ];
-        }
+		$this->ignore_middlewares_manager->add_middlewares($middleware);
 
         return $this;
     }
-	
+
 	/**
 	 * Determines whether there are any middlewares to ignore.
 	 *
@@ -598,9 +584,9 @@ abstract class RouteArchitect
 	 */
 	public function has_ignore_middlewares(): bool
 	{
-		return !empty($this->ignore_middlewares);
+		return !$this->ignore_middlewares_manager->is_empty();
 	}
-	
+
     /**
      * Gets the 'RouteArchitects' classes.
      *
