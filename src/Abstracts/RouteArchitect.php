@@ -690,6 +690,42 @@ abstract class RouteArchitect
 	{
 		return self::$name_sequences;
 	}
+
+	/**
+	 * Gets the sequence of the name by the given instance.
+	 *
+	 * @param RouteArchitect $route_architect
+	 *
+	 * @return string
+	 */
+	public static function get_name_sequence(RouteArchitect $route_architect): string
+	{
+		return self::$name_sequences->get_sequence($route_architect);
+	}
+
+	/**
+	 * Gets the sequence of the name by the given namespace.
+	 *
+	 * @param class-string<RouteArchitect> $namespace
+	 *
+	 * @return string
+	 */
+	public static function get_name_sequence_by_namespace(string $namespace): string
+	{
+		return self::$name_sequences->get_sequence_by_namespace($namespace);
+	}
+
+	/**
+	 * Appends one or more sequence of the name to the existing list.
+	 *
+	 * @return class-string<RouteArchitect>
+	 */
+	public static function add_name_sequence(RouteArchitect $route_architect, RouteArchitect $nested_route_architect): string
+	{
+		self::$name_sequences->add_sequence($route_architect, $nested_route_architect);
+
+		return static::class;
+	}
 	
 	/**
 	 * Gets sequences of views.
@@ -700,7 +736,60 @@ abstract class RouteArchitect
 	{
 		return self::$view_sequences;
 	}
-	
+
+	/**
+	 * Gets the sequence of the view by the given instance.
+	 *
+	 * @param RouteArchitect $route_architect
+	 *
+	 * @return string
+	 */
+	public static function get_view_sequence(RouteArchitect $route_architect): string
+	{
+		return self::$view_sequences->get_sequence($route_architect);
+	}
+
+	/**
+	 * Gets the sequence of the view by the given instance.
+	 *
+	 * @param class-string<RouteArchitect> $namespace
+	 *
+	 * @return string
+	 */
+	public static function get_view_sequence_by_namespace(string $namespace): string
+	{
+		return self::$view_sequences->get_sequence_by_namespace($namespace);
+	}
+
+	/**
+	 * Appends one or more sequence of the view to the existing list.
+	 *
+	 * @return class-string<RouteArchitect>
+	 */
+	public static function add_view_sequence(RouteArchitect $route_architect, RouteArchitect $nested_route_architect): string
+	{
+		self::$view_sequences->add_sequence($route_architect, $nested_route_architect);
+
+		return static::class;
+	}
+
+	/**
+	 * Implements the process of appending sequences by the given instances.
+	 *
+	 * @param RouteArchitect $route_architect
+	 * @param RouteArchitect $nested_route_architect
+	 *
+	 * @return class-string<RouteArchitect>
+	 */
+	public function sequences_add_processing(RouteArchitect $route_architect, RouteArchitect $nested_route_architect): string
+	{
+		self::add_name_sequence($route_architect, $nested_route_architect);
+
+		self::add_view_sequence($route_architect, $nested_route_architect);
+
+		return self::class;
+	}
+
 	/**
 	 * Gets the namespace.
 	 *
