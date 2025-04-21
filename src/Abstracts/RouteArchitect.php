@@ -156,30 +156,19 @@ abstract class RouteArchitect
      *
      * @return void
      */
-    protected function callable(): void
+    protected function handle(): void
     {
 		throw new \LogicException(RouteArchitectErrors::METHOD_NOT_OVERIDE->format(__FUNCTION__, static::class));
     }
 	
 	/**
-	 * Gets the 'Closure' of the 'callable' method.
+	 * Gets the 'Closure' of the 'handle' method.
 	 *
 	 * @return \Closure
 	 */
-	public function get_callable(): \Closure
+	public function get_handle(): \Closure
 	{
-		try
-		{
-			$closure = (new \ReflectionMethod($this, 'callable'))->getClosure($this);
-		}
-		catch (\ReflectionException $exception)
-		{
-			Log::error(RouteArchitectErrors::UNDEFINED_CLOSURE->format(__FUNCTION__), [ 'exception' => $exception ]);
-			
-			$closure = fn () => null;
-		}
-		
-		return $closure;
+		return RouteArchitectHelpers::get_closure($this, 'handle');
 	}
 
     /**
@@ -388,7 +377,7 @@ abstract class RouteArchitect
     {
 		if (!$this->has_action())
 		{
-			return $this->get_callable();
+			return $this->get_handle();
 		}
 		
 		if ($this->has_controller() && is_string($this->action))
