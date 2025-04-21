@@ -382,13 +382,13 @@ abstract class RouteArchitect
     /**
      * Gets the action.
      *
-     * @return array<class-string, string>|string|null
+     * @return array<class-string, string>|string|callable
      */
-    public function get_action(): array | string | null
+    public function get_action(): array | string | callable
     {
 		if (!$this->has_action())
 		{
-			return null;
+			return $this->get_callable();
 		}
 		
 		if ($this->has_controller() && is_string($this->action))
