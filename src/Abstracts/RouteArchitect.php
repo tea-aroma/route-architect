@@ -38,8 +38,8 @@ abstract class RouteArchitect
      * @var string|null
      */
     protected ?string $view = null;
-	
-	/**
+
+    /**
      * The prefix.
      *
      * @var string|null
@@ -66,14 +66,14 @@ abstract class RouteArchitect
      * @var class-string|null
      */
     protected ?string $controller = null;
-	
-	/**
-	 * The custom url.
-	 *
-	 * @var string|null
-	 */
-	protected ?string $custom_url = null;
-	
+
+    /**
+     * The custom url.
+     *
+     * @var string|null
+     */
+    protected ?string $custom_url = null;
+
     /**
      * The middleware(s).
      *
@@ -81,7 +81,7 @@ abstract class RouteArchitect
      */
     protected array $middlewares = [];
 
-	/**
+    /**
      * The manager of the middleware(s).
      *
      * @var RouteArchitectMiddlewares
@@ -95,7 +95,7 @@ abstract class RouteArchitect
      */
     protected array $ignore_middlewares = [];
 
-	/**
+    /**
      * The manager of the middleware(s) to ignore.
      *
      * @var RouteArchitectMiddlewares
@@ -115,40 +115,40 @@ abstract class RouteArchitect
      * @var string[]
      */
     protected array $variables = [];
-	
-	/**
-	 * The sequences of names.
-	 *
-	 * @var RouteArchitectSequences
-	 */
-	static protected RouteArchitectSequences $name_sequences;
-	
-	/**
-	 * The sequences of views.
-	 *
-	 * @var RouteArchitectSequences
-	 */
-	static protected RouteArchitectSequences $view_sequences;
-	
-	/**
-	 * The constructor.
-	 */
-	public function __construct()
-	{
-		self::$name_sequences ??= new RouteArchitectSequences(RouteArchitectSequenceTypes::NAMES);
-		
-		self::$view_sequences ??= new RouteArchitectSequences(RouteArchitectSequenceTypes::VIEWS);
 
-		$this->middlewares_manager ??= new RouteArchitectMiddlewares($this->middlewares);
+    /**
+     * The sequences of names.
+     *
+     * @var RouteArchitectSequences
+     */
+    static protected RouteArchitectSequences $name_sequences;
 
-		$this->ignore_middlewares_manager ??= new RouteArchitectMiddlewares($this->ignore_middlewares);
-	}
-	
-	/**
-	 * Defines and registers the route.
-	 *
-	 * @return void
-	 */
+    /**
+     * The sequences of views.
+     *
+     * @var RouteArchitectSequences
+     */
+    static protected RouteArchitectSequences $view_sequences;
+
+    /**
+     * The constructor.
+     */
+    public function __construct()
+    {
+        self::$name_sequences ??= new RouteArchitectSequences(RouteArchitectSequenceTypes::NAMES);
+
+        self::$view_sequences ??= new RouteArchitectSequences(RouteArchitectSequenceTypes::VIEWS);
+
+        $this->middlewares_manager ??= new RouteArchitectMiddlewares($this->middlewares);
+
+        $this->ignore_middlewares_manager ??= new RouteArchitectMiddlewares($this->ignore_middlewares);
+    }
+
+    /**
+     * Defines and registers the route.
+     *
+     * @return void
+     */
     public function register(): void {}
 
     /**
@@ -158,18 +158,18 @@ abstract class RouteArchitect
      */
     protected function handle(): void
     {
-		throw new \LogicException(RouteArchitectErrors::METHOD_NOT_OVERIDE->format(__FUNCTION__, static::class));
+        throw new \LogicException(RouteArchitectErrors::METHOD_NOT_OVERIDE->format(__FUNCTION__, static::class));
     }
-	
-	/**
-	 * Gets the 'Closure' of the 'handle' method.
-	 *
-	 * @return \Closure
-	 */
-	public function get_handle(): \Closure
-	{
-		return RouteArchitectHelpers::get_closure($this, 'handle');
-	}
+
+    /**
+     * Gets the 'Closure' of the 'handle' method.
+     *
+     * @return \Closure
+     */
+    public function get_handle(): \Closure
+    {
+        return RouteArchitectHelpers::get_closure($this, 'handle');
+    }
 
     /**
      * Gets the url.
@@ -178,18 +178,18 @@ abstract class RouteArchitect
      */
     public function get_url(): string
     {
-	    if ($this->has_custom_url())
-	    {
-		    return $this->get_custom_url();
-	    }
-	    
-	    $url_delimiter = RouteArchitectConfig::URL_DELIMITER->get_config();
-	    
-	    $route_name_delimiter = RouteArchitectConfig::ROUTE_NAME_DELIMITER->get_config();
-	    
-	    $regular_expression = '/' . addcslashes($route_name_delimiter, $route_name_delimiter) . '/';
-		
-	    return $url_delimiter . preg_replace($regular_expression, $url_delimiter, $this->get_name());
+        if ($this->has_custom_url())
+        {
+            return $this->get_custom_url();
+        }
+
+        $url_delimiter = RouteArchitectConfig::URL_DELIMITER->get_config();
+
+        $route_name_delimiter = RouteArchitectConfig::ROUTE_NAME_DELIMITER->get_config();
+
+        $regular_expression = '/' . addcslashes($route_name_delimiter, $route_name_delimiter) . '/';
+
+        return $url_delimiter . preg_replace($regular_expression, $url_delimiter, $this->get_name());
     }
 
     /**
@@ -215,16 +215,16 @@ abstract class RouteArchitect
 
         return $this;
     }
-	
-	/**
-	 * Determines whether the identifier exists.
-	 *
-	 * @return bool
-	 */
-	public function has_identifier(): bool
-	{
-		return !empty($this->identifier);
-	}
+
+    /**
+     * Determines whether the identifier exists.
+     *
+     * @return bool
+     */
+    public function has_identifier(): bool
+    {
+        return !empty($this->identifier);
+    }
 
     /**
      * Gets the name of route.
@@ -251,16 +251,16 @@ abstract class RouteArchitect
 
         return $this;
     }
-	
-	/**
-	 * Determines whether the name of route exists.
-	 *
-	 * @return bool
-	 */
-	public function has_name(): bool
-	{
-		return !empty($this->name);
-	}
+
+    /**
+     * Determines whether the name of route exists.
+     *
+     * @return bool
+     */
+    public function has_name(): bool
+    {
+        return !empty($this->name);
+    }
 
     /**
      * Gets the name of view.
@@ -287,53 +287,53 @@ abstract class RouteArchitect
 
         return $this;
     }
-	
-	/**
-	 * Determines whether the name of view exists.
-	 *
-	 * @return bool
-	 */
-	public function has_view(): bool
-	{
-		return !empty($this->view);
-	}
-	
-	/**
-	 * Gets the prefix.
-	 *
-	 * If the property 'prefix' is empty - the 'identifier' property will be returned.
-	 *
-	 * @return string
-	 */
-	public function get_prefix(): string
-	{
-		return $this->prefix ?? $this->identifier;
-	}
-	
-	/**
-	 * Sets the given prefix.
-	 *
-	 * @param string $prefix
-	 *
-	 * @return $this
-	 */
-	public function set_prefix(string $prefix): static
-	{
-		$this->prefix = $prefix;
-		
-		return $this;
-	}
-	
-	/**
-	 * Determines whether the prefix exists.
-	 *
-	 * @return bool
-	 */
-	public function has_prefix(): bool
-	{
-		return !empty($this->prefix);
-	}
-	
+
+    /**
+     * Determines whether the name of view exists.
+     *
+     * @return bool
+     */
+    public function has_view(): bool
+    {
+        return !empty($this->view);
+    }
+
+    /**
+     * Gets the prefix.
+     *
+     * If the property 'prefix' is empty - the 'identifier' property will be returned.
+     *
+     * @return string
+     */
+    public function get_prefix(): string
+    {
+        return $this->prefix ?? $this->identifier;
+    }
+
+    /**
+     * Sets the given prefix.
+     *
+     * @param string $prefix
+     *
+     * @return $this
+     */
+    public function set_prefix(string $prefix): static
+    {
+        $this->prefix = $prefix;
+
+        return $this;
+    }
+
+    /**
+     * Determines whether the prefix exists.
+     *
+     * @return bool
+     */
+    public function has_prefix(): bool
+    {
+        return !empty($this->prefix);
+    }
+
     /**
      * Gets the type of method.
      *
@@ -357,16 +357,16 @@ abstract class RouteArchitect
 
         return $this;
     }
-	
-	/**
-	 * Determines whether the type exists.
-	 *
-	 * @return bool
-	 */
-	public function has_type(): bool
-	{
-		return !empty($this->type);
-	}
+
+    /**
+     * Determines whether the type exists.
+     *
+     * @return bool
+     */
+    public function has_type(): bool
+    {
+        return !empty($this->type);
+    }
 
     /**
      * Gets the action.
@@ -375,43 +375,43 @@ abstract class RouteArchitect
      */
     public function get_action(): array | string | callable
     {
-		if (!$this->has_action())
-		{
-			return $this->get_handle();
-		}
-		
-		if ($this->has_controller() && is_string($this->action))
-		{
-			return $this->get_controller() . RouteArchitectConfig::ACTION_DELIMITER->get_config() . $this->action;
-		}
-		
+        if (!$this->has_action())
+        {
+            return $this->get_handle();
+        }
+
+        if ($this->has_controller() && is_string($this->action))
+        {
+            return $this->get_controller() . RouteArchitectConfig::ACTION_DELIMITER->get_config() . $this->action;
+        }
+
         return $this->action;
     }
-	
-	/**
-	 * Sets the given action.
-	 *
-	 * @param array<class-string, string>|string $action
-	 *
-	 * @return static
-	 */
+
+    /**
+     * Sets the given action.
+     *
+     * @param array<class-string, string>|string $action
+     *
+     * @return static
+     */
     public function set_action(array | string $action): static
     {
         $this->action = $action;
-		
-		return $this;
+
+        return $this;
     }
-	
-	/**
-	 * Determines whether there an action.
-	 *
-	 * @return bool
-	 */
-	public function has_action(): bool
-	{
-		return !empty($this->action);
-	}
-	
+
+    /**
+     * Determines whether there an action.
+     *
+     * @return bool
+     */
+    public function has_action(): bool
+    {
+        return !empty($this->action);
+    }
+
     /**
      * Gets the class name of constructor.
      *
@@ -435,50 +435,50 @@ abstract class RouteArchitect
 
         return $this;
     }
-	
-	/**
-	 * Determines whether the controller exists.
-	 *
-	 * @return bool
-	 */
-	public function has_controller(): bool
-	{
-		return !empty($this->controller);
-	}
-	
-	/**
-	 * Gets the custom url.
-	 *
-	 * @return string|null
-	 */
-	public function get_custom_url(): ?string
-	{
-		return $this->custom_url;
-	}
-	
-	/**
-	 * Sets the given custom url.
-	 *
-	 * @param string $custom_url
-	 *
-	 * @return static
-	 */
-	public function set_custom_url(string $custom_url): static
-	{
-		$this->custom_url = $custom_url;
-		
-		return $this;
-	}
-	
-	/**
-	 * Determines whether the custom url exists.
-	 *
-	 * @return bool
-	 */
-	public function has_custom_url(): bool
-	{
-		return !empty($this->custom_url);
-	}
+
+    /**
+     * Determines whether the controller exists.
+     *
+     * @return bool
+     */
+    public function has_controller(): bool
+    {
+        return !empty($this->controller);
+    }
+
+    /**
+     * Gets the custom url.
+     *
+     * @return string|null
+     */
+    public function get_custom_url(): ?string
+    {
+        return $this->custom_url;
+    }
+
+    /**
+     * Sets the given custom url.
+     *
+     * @param string $custom_url
+     *
+     * @return static
+     */
+    public function set_custom_url(string $custom_url): static
+    {
+        $this->custom_url = $custom_url;
+
+        return $this;
+    }
+
+    /**
+     * Determines whether the custom url exists.
+     *
+     * @return bool
+     */
+    public function has_custom_url(): bool
+    {
+        return !empty($this->custom_url);
+    }
 
     /**
      * Gets the middleware(s).
@@ -513,20 +513,20 @@ abstract class RouteArchitect
      */
     public function add_middleware(array | string $middleware): static
     {
-		$this->middlewares_manager->add_middlewares($middleware);
+        $this->middlewares_manager->add_middlewares($middleware);
 
         return $this;
     }
 
-	/**
-	 * Determines whether there are any middlewares.
-	 *
-	 * @return bool
-	 */
-	public function has_middlewares(): bool
-	{
-		return !$this->middlewares_manager->is_empty();
-	}
+    /**
+     * Determines whether there are any middlewares.
+     *
+     * @return bool
+     */
+    public function has_middlewares(): bool
+    {
+        return !$this->middlewares_manager->is_empty();
+    }
 
     /**
      * Gets the middleware(s) to ignore.
@@ -561,20 +561,20 @@ abstract class RouteArchitect
      */
     public function add_ignore_middleware(array | string $middleware): static
     {
-		$this->ignore_middlewares_manager->add_middlewares($middleware);
+        $this->ignore_middlewares_manager->add_middlewares($middleware);
 
         return $this;
     }
 
-	/**
-	 * Determines whether there are any middlewares to ignore.
-	 *
-	 * @return bool
-	 */
-	public function has_ignore_middlewares(): bool
-	{
-		return !$this->ignore_middlewares_manager->is_empty();
-	}
+    /**
+     * Determines whether there are any middlewares to ignore.
+     *
+     * @return bool
+     */
+    public function has_ignore_middlewares(): bool
+    {
+        return !$this->ignore_middlewares_manager->is_empty();
+    }
 
     /**
      * Gets the 'RouteArchitects' classes.
@@ -613,17 +613,17 @@ abstract class RouteArchitect
 
         return $this;
     }
-	
-	/**
-	 * Determines whether there are any 'RouteArchitect' class.
-	 *
-	 * @return bool
-	 */
-	public function has_route_architects(): bool
-	{
-		return !empty($this->route_architects);
-	}
-	
+
+    /**
+     * Determines whether there are any 'RouteArchitect' class.
+     *
+     * @return bool
+     */
+    public function has_route_architects(): bool
+    {
+        return !empty($this->route_architects);
+    }
+
     /**
      * Gets the variables.
      *
@@ -659,143 +659,143 @@ abstract class RouteArchitect
 
         return $this;
     }
-	
-	/**
-	 * Determines whether there are any variables.
-	 *
-	 * @return bool
-	 */
-	public function has_variables(): bool
-	{
-		return !empty($this->variables);
-	}
-	
-	/**
-	 * Gets sequences of names.
-	 *
-	 * @return RouteArchitectSequences
-	 */
-	public static function get_name_sequences(): RouteArchitectSequences
-	{
-		return self::$name_sequences;
-	}
 
-	/**
-	 * Gets the sequence of the name by the given instance.
-	 *
-	 * @param RouteArchitect $route_architect
-	 *
-	 * @return string
-	 */
-	public static function get_name_sequence(RouteArchitect $route_architect): string
-	{
-		return self::$name_sequences->get_sequence($route_architect);
-	}
+    /**
+     * Determines whether there are any variables.
+     *
+     * @return bool
+     */
+    public function has_variables(): bool
+    {
+        return !empty($this->variables);
+    }
 
-	/**
-	 * Gets the sequence of the name by the given namespace.
-	 *
-	 * @param class-string<RouteArchitect> $namespace
-	 *
-	 * @return string
-	 */
-	public static function get_name_sequence_by_namespace(string $namespace): string
-	{
-		return self::$name_sequences->get_sequence_by_namespace($namespace);
-	}
+    /**
+     * Gets sequences of names.
+     *
+     * @return RouteArchitectSequences
+     */
+    public static function get_name_sequences(): RouteArchitectSequences
+    {
+        return self::$name_sequences;
+    }
 
-	/**
-	 * Appends one or more sequence of the name to the existing list.
-	 *
-	 * @return class-string<RouteArchitect>
-	 */
-	public static function add_name_sequence(RouteArchitect $route_architect, RouteArchitect $nested_route_architect): string
-	{
-		self::$name_sequences->add_sequence($route_architect, $nested_route_architect);
+    /**
+     * Gets the sequence of the name by the given instance.
+     *
+     * @param RouteArchitect $route_architect
+     *
+     * @return string
+     */
+    public static function get_name_sequence(RouteArchitect $route_architect): string
+    {
+        return self::$name_sequences->get_sequence($route_architect);
+    }
 
-		return static::class;
-	}
-	
-	/**
-	 * Gets sequences of views.
-	 *
-	 * @return RouteArchitectSequences
-	 */
-	public static function get_view_sequences(): RouteArchitectSequences
-	{
-		return self::$view_sequences;
-	}
+    /**
+     * Gets the sequence of the name by the given namespace.
+     *
+     * @param class-string<RouteArchitect> $namespace
+     *
+     * @return string
+     */
+    public static function get_name_sequence_by_namespace(string $namespace): string
+    {
+        return self::$name_sequences->get_sequence_by_namespace($namespace);
+    }
 
-	/**
-	 * Gets the sequence of the view by the given instance.
-	 *
-	 * @param RouteArchitect $route_architect
-	 *
-	 * @return string
-	 */
-	public static function get_view_sequence(RouteArchitect $route_architect): string
-	{
-		return self::$view_sequences->get_sequence($route_architect);
-	}
+    /**
+     * Appends one or more sequence of the name to the existing list.
+     *
+     * @return class-string<RouteArchitect>
+     */
+    public static function add_name_sequence(RouteArchitect $route_architect, RouteArchitect $nested_route_architect): string
+    {
+        self::$name_sequences->add_sequence($route_architect, $nested_route_architect);
 
-	/**
-	 * Gets the sequence of the view by the given instance.
-	 *
-	 * @param class-string<RouteArchitect> $namespace
-	 *
-	 * @return string
-	 */
-	public static function get_view_sequence_by_namespace(string $namespace): string
-	{
-		return self::$view_sequences->get_sequence_by_namespace($namespace);
-	}
+        return static::class;
+    }
 
-	/**
-	 * Appends one or more sequence of the view to the existing list.
-	 *
-	 * @return class-string<RouteArchitect>
-	 */
-	public static function add_view_sequence(RouteArchitect $route_architect, RouteArchitect $nested_route_architect): string
-	{
-		self::$view_sequences->add_sequence($route_architect, $nested_route_architect);
+    /**
+     * Gets sequences of views.
+     *
+     * @return RouteArchitectSequences
+     */
+    public static function get_view_sequences(): RouteArchitectSequences
+    {
+        return self::$view_sequences;
+    }
 
-		return static::class;
-	}
+    /**
+     * Gets the sequence of the view by the given instance.
+     *
+     * @param RouteArchitect $route_architect
+     *
+     * @return string
+     */
+    public static function get_view_sequence(RouteArchitect $route_architect): string
+    {
+        return self::$view_sequences->get_sequence($route_architect);
+    }
 
-	/**
-	 * Implements the process of appending sequences by the given instances.
-	 *
-	 * @param RouteArchitect $route_architect
-	 * @param RouteArchitect $nested_route_architect
-	 *
-	 * @return class-string<RouteArchitect>
-	 */
-	public function sequences_add_processing(RouteArchitect $route_architect, RouteArchitect $nested_route_architect): string
-	{
-		self::add_name_sequence($route_architect, $nested_route_architect);
+    /**
+     * Gets the sequence of the view by the given instance.
+     *
+     * @param class-string<RouteArchitect> $namespace
+     *
+     * @return string
+     */
+    public static function get_view_sequence_by_namespace(string $namespace): string
+    {
+        return self::$view_sequences->get_sequence_by_namespace($namespace);
+    }
 
-		self::add_view_sequence($route_architect, $nested_route_architect);
+    /**
+     * Appends one or more sequence of the view to the existing list.
+     *
+     * @return class-string<RouteArchitect>
+     */
+    public static function add_view_sequence(RouteArchitect $route_architect, RouteArchitect $nested_route_architect): string
+    {
+        self::$view_sequences->add_sequence($route_architect, $nested_route_architect);
 
-		return self::class;
-	}
+        return static::class;
+    }
 
-	/**
-	 * Gets the namespace.
-	 *
-	 * @return string
-	 */
-	public function get_namespace(): string
-	{
-		return $this::class;
-	}
-	
-	/**
-	 * Determines whether the current instance is a group.
-	 *
-	 * @return string
-	 */
-	public function is_group(): string
-	{
-		return $this->has_route_architects();
-	}
+    /**
+     * Implements the process of appending sequences by the given instances.
+     *
+     * @param RouteArchitect $route_architect
+     * @param RouteArchitect $nested_route_architect
+     *
+     * @return class-string<RouteArchitect>
+     */
+    public function sequences_add_processing(RouteArchitect $route_architect, RouteArchitect $nested_route_architect): string
+    {
+        self::add_name_sequence($route_architect, $nested_route_architect);
+
+        self::add_view_sequence($route_architect, $nested_route_architect);
+
+        return self::class;
+    }
+
+    /**
+     * Gets the namespace.
+     *
+     * @return string
+     */
+    public function get_namespace(): string
+    {
+        return $this::class;
+    }
+
+    /**
+     * Determines whether the current instance is a group.
+     *
+     * @return string
+     */
+    public function is_group(): string
+    {
+        return $this->has_route_architects();
+    }
 }
