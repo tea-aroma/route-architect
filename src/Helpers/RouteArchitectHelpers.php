@@ -3,9 +3,10 @@
 namespace TeaAroma\RouteArchitect\Helpers;
 
 
-use TeaAroma\RouteArchitect\Abstracts\RouteArchitect;
+use Illuminate\Support\Facades\Log;
 use TeaAroma\RouteArchitect\Callables\IsNotMiddleware;
 use TeaAroma\RouteArchitect\Enums\RouteArchitectConfig;
+use TeaAroma\RouteArchitect\Enums\RouteArchitectErrors;
 
 
 /**
@@ -40,22 +41,6 @@ class RouteArchitectHelpers
 	}
 	
 	/**
-	 * @deprecated
-	 *
-	 * @see RouteArchitect::is_group()
-	 *
-	 * Determines whether the give RouteArchitect is a group.
-	 *
-	 * @param RouteArchitect $route_architect
-	 *
-	 * @return bool
-	 */
-	static public function is_group_route(RouteArchitect $route_architect): bool
-	{
-		return !$route_architect->has_action();
-	}
-	
-	/**
 	 * Converts the variables of the given 'RouteArchitect' class to string.
 	 *
 	 * [ 'id' ] => ...{id}
@@ -87,20 +72,41 @@ class RouteArchitectHelpers
 		
 		return $string;
 	}
-	
+
 	/**
-	 * @deprecated
+	 * Gets the 'callable' of the given class / object by the given name of the method.
 	 *
-	 * @see RouteArchitectConfig::get_config()
+	 * @param class-string|object $class_or_object
+	 * @param string        $method_name
 	 *
-	 * Gets the config value by the given case of enum.
-	 *
-	 * @param RouteArchitectConfig $config
-	 *
-	 * @return mixed
+	 * @return callable
 	 */
-	static public function get_config(RouteArchitectConfig $config): mixed
+	public static function get_callable(string | object $class_or_object, string $method_name): callable
 	{
-		return config('route-architect.' . $config->value);
+		return [ $class_or_object, $method_name ];
+	}
+
+	/**
+	 * Gets the 'Closure' of the given class / object by the given name of the method.
+	 *
+	 * @param class-string|object $class_or_object
+	 * @param string        $method_name
+	 *
+	 * @return callable
+	 */
+	public static function get_closure(string | object $class_or_object, string $method_name): \Closure
+	{
+		try
+		{
+			$closure = self::get_callable($class_or_object, $method_name)( ... );
+		}
+		catch (\Exception $exception)
+		{
+			Log::error(RouteArchitectErrors::UNDEFINED_METHOD->format($method_name, $class_or_object::class), [ 'exception' => $exception ]);
+
+			$closure = fn () => null;
+		}
+
+		return $closure;
 	}
 }
