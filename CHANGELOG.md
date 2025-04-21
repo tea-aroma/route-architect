@@ -48,3 +48,30 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - Refactored methods accessing the collection in the `RouteArchitectSequences` class.
 - Reordered methods in the `RouteArchitect` class for better organization.
+
+## [0.0.6] - 2025-04-21
+
+### Added
+
+- New dependencies.
+- New configuration option.
+- New method `get_config()` in `RouteArchitectConfig`.
+- New enums:
+	- `RouteArchitectSequenceTypes`.
+	- `RouteArchitectRouteMethodNames`.
+	- `RouteArchitectErrors`.
+- New logic and methods in `RouteArchitectHelpers`, including `get_callable()` and `get_closure()`.
+- New logic and methods in `RouteArchitect`, including `get_name_sequences()` and `get_view_sequences()`, etc.
+- New logic in `RouteArchitectSequences`.
+- New property in `RouteArchitectErrors`.
+
+### Changed
+
+- Used `Collection::has()` instead of `contains()` for better accuracy in `RouteArchitectSequences`.
+- Replaced array access in `get_method_name()` with `match` expression.
+- Updated middleware managing to use `RouteArchitectMiddlewares` (**breaking change**).
+- Renamed method `callable()` and `get_callable()` with `handle()` and `get_handle()` in `RouteArchitect` (**breaking change**).
+
+### Removed
+
+- Deprecated methods in `RouteArchitectHelpers` (**breaking change**).
