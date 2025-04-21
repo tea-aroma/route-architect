@@ -8,7 +8,7 @@ namespace TeaAroma\RouteArchitect\Enums;
  */
 enum RouteArchitectMethodNames: string
 {
-	case GET_NAME = 'get_name';
-	
-	case GET_VIEW = 'get_view';
+    case GET_NAME = 'get_name';
+
+    case GET_VIEW = 'get_view';
 }

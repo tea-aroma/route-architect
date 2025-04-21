@@ -8,7 +8,7 @@ namespace TeaAroma\RouteArchitect\Enums;
  */
 enum RouteArchitectSequenceTypes
 {
-	case NAMES;
-	
-	case VIEWS;
+    case NAMES;
+
+    case VIEWS;
 }
