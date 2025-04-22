@@ -4,13 +4,13 @@ namespace TeaAroma\RouteArchitect\Abstracts;
 
 
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Log;
 use TeaAroma\RouteArchitect\Classes\RouteArchitectMiddlewares;
 use TeaAroma\RouteArchitect\Classes\RouteArchitectSequences;
 use TeaAroma\RouteArchitect\Enums\RouteArchitectConfig;
 use TeaAroma\RouteArchitect\Enums\RouteArchitectErrors;
 use TeaAroma\RouteArchitect\Enums\RouteArchitectSequenceTypes;
 use TeaAroma\RouteArchitect\Enums\RouteArchitectTypes;
+use TeaAroma\RouteArchitect\Helpers\RouteArchitectHelpers;
 
 
 /**
@@ -89,18 +89,18 @@ abstract class RouteArchitect
     private RouteArchitectMiddlewares $middlewares_manager;
 
     /**
-     * The middleware(s) to ignore.
+     * The middlewares to exclude.
      *
      * @var class-string[]
      */
-    protected array $ignore_middlewares = [];
+    protected array $exclude_middlewares = [];
 
     /**
-     * The manager of the middleware(s) to ignore.
+     * The manager of the middlewares to exclude.
      *
      * @var RouteArchitectMiddlewares
      */
-    private RouteArchitectMiddlewares $ignore_middlewares_manager;
+    private RouteArchitectMiddlewares $exclude_middlewares_manager;
 
     /**
      * The 'RouteArchitect' classes.
@@ -141,7 +141,7 @@ abstract class RouteArchitect
 
         $this->middlewares_manager ??= new RouteArchitectMiddlewares($this->middlewares);
 
-        $this->ignore_middlewares_manager ??= new RouteArchitectMiddlewares($this->ignore_middlewares);
+        $this->exclude_middlewares_manager ??= new RouteArchitectMiddlewares($this->exclude_middlewares);
     }
 
     /**
@@ -481,7 +481,7 @@ abstract class RouteArchitect
     }
 
     /**
-     * Gets the middleware(s).
+     * Gets the middlewares.
      *
      * @return Collection<class-string>
      */
@@ -491,7 +491,17 @@ abstract class RouteArchitect
     }
 
     /**
-     * Sets the given middleware(s).
+     * Gets the array of the middlewares.
+     *
+     * @return class-string[]
+     */
+    public function get_middlewares_array(): array
+    {
+        return $this->middlewares_manager->to_array();
+    }
+
+    /**
+     * Sets the given middlewares.
      *
      * @param Collection<class-string> $middlewares
      *
@@ -529,51 +539,61 @@ abstract class RouteArchitect
     }
 
     /**
-     * Gets the middleware(s) to ignore.
+     * Gets the middlewares to exclude.
      *
      * @return Collection<class-string>
      */
-    public function get_ignore_middlewares(): Collection
+    public function get_exclude_middlewares(): Collection
     {
-        return $this->ignore_middlewares_manager->get_middlewares();
+        return $this->exclude_middlewares_manager->get_middlewares();
     }
 
     /**
-     * Sets the given middleware(s) to ignore.
+     * Gets the array of the middlewares to exclude.
+     *
+     * @return class-string[]
+     */
+    public function get_exclude_middlewares_array(): array
+    {
+        return $this->exclude_middlewares_manager->to_array();
+    }
+
+    /**
+     * Sets the given middlewares to exclude.
      *
      * @param Collection<class-string> $middlewares
      *
      * @return static
      */
-    public function set_ignore_middlewares(Collection $middlewares): static
+    public function set_exclude_middlewares(Collection $middlewares): static
     {
-        $this->ignore_middlewares_manager->set_middlewares($middlewares);
+        $this->exclude_middlewares_manager->set_middlewares($middlewares);
 
         return $this;
     }
 
     /**
-     * Appends one or more middleware to ignore to the existing list.
+     * Appends one or more middleware to exclude to the existing list.
      *
      * @param class-string[]|class-string $middleware
      *
      * @return static
      */
-    public function add_ignore_middleware(array | string $middleware): static
+    public function add_exclude_middleware(array | string $middleware): static
     {
-        $this->ignore_middlewares_manager->add_middlewares($middleware);
+        $this->exclude_middlewares_manager->add_middlewares($middleware);
 
         return $this;
     }
 
     /**
-     * Determines whether there are any middlewares to ignore.
+     * Determines whether there are any middlewares to exclude.
      *
      * @return bool
      */
-    public function has_ignore_middlewares(): bool
+    public function has_exclude_middlewares(): bool
     {
-        return !$this->ignore_middlewares_manager->is_empty();
+        return !$this->exclude_middlewares_manager->is_empty();
     }
 
     /**
@@ -675,45 +695,43 @@ abstract class RouteArchitect
      *
      * @return RouteArchitectSequences
      */
-    public static function get_name_sequences(): RouteArchitectSequences
+    public function get_name_sequences(): RouteArchitectSequences
     {
         return self::$name_sequences;
     }
 
     /**
-     * Gets the sequence of the name by the given instance.
+     * Gets the sequence of the name.
+     *
+     * @return string|null
+     */
+    public function get_name_sequence(): string | null
+    {
+        return self::$name_sequences->get_sequence($this);
+    }
+
+    /**
+     * Appends the sequence of the name.
      *
      * @param RouteArchitect $route_architect
      *
-     * @return string
+     * @return static
      */
-    public static function get_name_sequence(RouteArchitect $route_architect): string
+    public function add_name_sequence(RouteArchitect $route_architect): static
     {
-        return self::$name_sequences->get_sequence($route_architect);
+        self::$name_sequences->add_sequence($route_architect, $this);
+
+        return $this;
     }
 
     /**
-     * Gets the sequence of the name by the given namespace.
+     * Determines whether the sequence of the name exists.
      *
-     * @param class-string<RouteArchitect> $namespace
-     *
-     * @return string
+     * @return bool
      */
-    public static function get_name_sequence_by_namespace(string $namespace): string
+    public function has_name_sequence(): bool
     {
-        return self::$name_sequences->get_sequence_by_namespace($namespace);
-    }
-
-    /**
-     * Appends one or more sequence of the name to the existing list.
-     *
-     * @return class-string<RouteArchitect>
-     */
-    public static function add_name_sequence(RouteArchitect $route_architect, RouteArchitect $nested_route_architect): string
-    {
-        self::$name_sequences->add_sequence($route_architect, $nested_route_architect);
-
-        return static::class;
+        return self::$name_sequences->has_sequence($this);
     }
 
     /**
@@ -721,62 +739,59 @@ abstract class RouteArchitect
      *
      * @return RouteArchitectSequences
      */
-    public static function get_view_sequences(): RouteArchitectSequences
+    public function get_view_sequences(): RouteArchitectSequences
     {
         return self::$view_sequences;
     }
 
     /**
-     * Gets the sequence of the view by the given instance.
+     * Gets the sequence of the view.
+     *
+     * @return string|null
+     */
+    public function get_view_sequence(): string | null
+    {
+        return self::$view_sequences->get_sequence($this);
+    }
+
+    /**
+     * Appends one or more sequence of the view.
      *
      * @param RouteArchitect $route_architect
      *
-     * @return string
+     * @return static
      */
-    public static function get_view_sequence(RouteArchitect $route_architect): string
+    public function add_view_sequence(RouteArchitect $route_architect): static
     {
-        return self::$view_sequences->get_sequence($route_architect);
+        self::$view_sequences->add_sequence($route_architect, $this);
+
+        return $this;
     }
 
     /**
-     * Gets the sequence of the view by the given instance.
+     * Determines whether the sequence of the view exists.
      *
-     * @param class-string<RouteArchitect> $namespace
-     *
-     * @return string
+     * @return bool
      */
-    public static function get_view_sequence_by_namespace(string $namespace): string
+    public function has_view_sequence(): bool
     {
-        return self::$view_sequences->get_sequence_by_namespace($namespace);
+        return self::$view_sequences->has_sequence($this);
     }
 
     /**
-     * Appends one or more sequence of the view to the existing list.
-     *
-     * @return class-string<RouteArchitect>
-     */
-    public static function add_view_sequence(RouteArchitect $route_architect, RouteArchitect $nested_route_architect): string
-    {
-        self::$view_sequences->add_sequence($route_architect, $nested_route_architect);
-
-        return static::class;
-    }
-
-    /**
-     * Implements the process of appending sequences by the given instances.
+     * Implements the process of appending sequences by the given instance.
      *
      * @param RouteArchitect $route_architect
-     * @param RouteArchitect $nested_route_architect
      *
-     * @return class-string<RouteArchitect>
+     * @return static
      */
-    public function sequences_add_processing(RouteArchitect $route_architect, RouteArchitect $nested_route_architect): string
+    public function add_sequences_processing(RouteArchitect $route_architect): static
     {
-        self::add_name_sequence($route_architect, $nested_route_architect);
+        self::add_name_sequence($route_architect);
 
-        self::add_view_sequence($route_architect, $nested_route_architect);
+        self::add_view_sequence($route_architect);
 
-        return self::class;
+        return $this;
     }
 
     /**
