@@ -75,3 +75,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ### Removed
 
 - Deprecated methods in `RouteArchitectHelpers` (**breaking change**).
+ 
+## [0.1.0] - 2025-04-22
+
+### Added
+
+- New methods in `RouteArchitect`, including `has_name_sequence()`, `has_view_sequence()`, `get_middlewares_array()`, `get_exclude_middlewares_array()` (**breaking change**).
+- New logic for managing sequences in `RouteArchitect` (**breaking change**).
+- New `RouteArchitectRegistrar` class for registering routes.
+
+### Changed
+
+- Normalized tab indentation for all files.
+- Renamed the `ignore_middlewares` to `exclude_middlewares` (**breaking change**).
