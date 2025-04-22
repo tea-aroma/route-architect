@@ -174,7 +174,7 @@ abstract class RouteArchitect
      */
     public function get_handle(): \Closure
     {
-        return RouteArchitectHelpers::get_closure($this, 'handle');
+        return $this->handle( ... );
     }
 
     /**
