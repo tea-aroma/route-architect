@@ -5,6 +5,7 @@ namespace TeaAroma\RouteArchitect\Abstracts;
 
 use Illuminate\Support\Collection;
 use TeaAroma\RouteArchitect\Classes\RouteArchitectMiddlewares;
+use TeaAroma\RouteArchitect\Classes\RouteArchitectRegistrar;
 use TeaAroma\RouteArchitect\Classes\RouteArchitectSequences;
 use TeaAroma\RouteArchitect\Enums\RouteArchitectConfig;
 use TeaAroma\RouteArchitect\Enums\RouteArchitectErrors;
@@ -149,7 +150,12 @@ abstract class RouteArchitect
      *
      * @return void
      */
-    public function register(): void {}
+    public function register(): void
+    {
+        $registrar = new RouteArchitectRegistrar($this);
+
+        $registrar->register();
+    }
 
     /**
      * Callback method to be executed when property 'action' is null.
