@@ -120,7 +120,7 @@ class RouteArchitectRegistrar
             return;
         }
 
-        $this->route->{ $this->route_architect->get_type() }($this->route_architect->get_url(), $this->route_architect->get_action());
+        $this->route->{ $this->route_architect->get_type()->value }($this->route_architect->get_url(), $this->route_architect->get_action());
     }
 
     /**
