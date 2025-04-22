@@ -133,9 +133,9 @@ class RouteArchitectSequences
      *
      * @param RouteArchitect $route_architect
      *
-     * @return string
+     * @return string|null
      */
-    public function get_sequence(RouteArchitect $route_architect): string
+    public function get_sequence(RouteArchitect $route_architect): string | null
     {
         return $this->sequences->get($route_architect->get_namespace());
     }
@@ -145,9 +145,9 @@ class RouteArchitectSequences
      *
      * @param string $namespace
      *
-     * @return string
+     * @return string|null
      */
-    public function get_sequence_by_namespace(string $namespace): string
+    public function get_sequence_by_namespace(string $namespace): string | null
     {
         return $this->sequences->get($namespace);
     }
