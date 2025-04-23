@@ -58,6 +58,10 @@ class RouteArchitectRegistrar
 
         $this->controller_processing();
 
+        $this->namespace_processing();
+
+        $this->domain_processing();
+
         $this->group_processing();
     }
 
