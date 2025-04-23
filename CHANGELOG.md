@@ -75,7 +75,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ### Removed
 
 - Deprecated methods in `RouteArchitectHelpers` (**breaking change**).
- 
+
 ## [0.1.0] - 2025-04-22
 
 ### Added
@@ -88,3 +88,26 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - Normalized tab indentation for all files.
 - Renamed the `ignore_middlewares` to `exclude_middlewares` (**breaking change**).
+
+## [0.1.1] - 2025-04-22
+
+### Fixed
+
+- Access enum value in `RouteArchitectRegistrar`.
+
+## [0.1.2] - 2025-04-22
+
+### Fixed
+
+- Change logic in `get_handle()` method in `RouteArchitect`.
+
+## [0.1.3] - 2025-04-23
+
+### Added
+
+- New `namespace` and `domain` properties with accessors in `RouteArchitect`.
+- New `namespace` and `domain` processing in `RouteArchitectRegistrar`.
+
+### Changed
+
+- Renamed `get_namespace()` method to `get_classname()` in `RouteArchitect` and `RouteArchitectSequences` (**breaking change**).
