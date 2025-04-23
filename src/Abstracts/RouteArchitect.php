@@ -48,6 +48,13 @@ abstract class RouteArchitect
     protected ?string $prefix = null;
 
     /**
+     * The url.
+     *
+     * @var string|null
+     */
+    protected ?string $url = null;
+
+    /**
      * The type of method.
      *
      * @var RouteArchitectTypes
@@ -192,24 +199,18 @@ abstract class RouteArchitect
     }
 
     /**
-     * Gets the url.
+     * Normalizes a string to lowercase and joins its segments using the given delimiter.
+     *
+     * @param string $input
+     * @param string $delimiter
      *
      * @return string
      */
-    public function get_url(): string
+    public function normalize_with_delimiter(string $input, string $delimiter): string
     {
-        if ($this->has_custom_url())
-        {
-            return $this->get_custom_url();
-        }
+        $segments = preg_split('/[^a-z0-9]+/i', $input, flags: PREG_SPLIT_NO_EMPTY);
 
-        $url_delimiter = RouteArchitectConfig::URL_DELIMITER->get_config();
-
-        $route_name_delimiter = RouteArchitectConfig::ROUTE_NAME_DELIMITER->get_config();
-
-        $regular_expression = '/' . addcslashes($route_name_delimiter, $route_name_delimiter) . '/';
-
-        return $url_delimiter . preg_replace($regular_expression, $url_delimiter, $this->get_name());
+        return strtolower(implode($delimiter, $segments));
     }
 
     /**
@@ -247,15 +248,13 @@ abstract class RouteArchitect
     }
 
     /**
-     * Gets the name of route.
-     *
-     * If the property 'name' is null - the 'identifier' property will be returned.
+     * Gets the route name or identifier, normalized using the route name delimiter.
      *
      * @return string
      */
     public function get_name(): string
     {
-        return $this->name ?? $this->identifier;
+        return $this->normalize_with_delimiter($this->name ?? $this->identifier, RouteArchitectConfig::ROUTE_NAME_DELIMITER->get_config());
     }
 
     /**
@@ -283,15 +282,13 @@ abstract class RouteArchitect
     }
 
     /**
-     * Gets the name of view.
-     *
-     * If the property 'view_name' is empty - the 'identifier' property will be returned.
+     * Gets the view name or identifier, normalized using the view name delimiter.
      *
      * @return string
      */
     public function get_view(): string
     {
-        return $this->view ?? $this->identifier;
+        return $this->normalize_with_delimiter($this->view ?? $this->identifier, RouteArchitectConfig::VIEW_NAME_DELIMITER->get_config());
     }
 
     /**
@@ -319,15 +316,13 @@ abstract class RouteArchitect
     }
 
     /**
-     * Gets the prefix.
-     *
-     * If the property 'prefix' is empty - the 'identifier' property will be returned.
+     * Gets the prefix or identifier, normalized using the URL segment delimiter.
      *
      * @return string
      */
     public function get_prefix(): string
     {
-        return $this->prefix ?? $this->identifier;
+        return $this->normalize_with_delimiter($this->prefix ?? $this->identifier, RouteArchitectConfig::URL_SEGMENT_DELIMITER->get_config());
     }
 
     /**
@@ -352,6 +347,45 @@ abstract class RouteArchitect
     public function has_prefix(): bool
     {
         return !empty($this->prefix);
+    }
+
+    /**
+     * Gets the url or identifier, normalized using the URL segment delimiter.
+     *
+     * @return string
+     */
+    public function get_url(): string
+    {
+        if ($this->has_custom_url())
+        {
+            return $this->custom_url;
+        }
+
+        $url_delimiter = RouteArchitectConfig::URL_DELIMITER->get_config();
+
+        return $url_delimiter . $this->get_prefix() . $url_delimiter . $this->get_variables_string();
+    }
+
+    /**
+     * Sets the given url.
+     *
+     * @param string $url
+     *
+     * @return void
+     */
+    public function set_url(string $url): void
+    {
+        $this->url = $url;
+    }
+
+    /**
+     * Determines whether the url exists.
+     *
+     * @return bool
+     */
+    public function has_url(): bool
+    {
+        return !empty($this->url);
     }
 
     /**
@@ -748,6 +782,30 @@ abstract class RouteArchitect
     }
 
     /**
+     * Converts route variables into a string.
+     *
+     * @return string
+     */
+    public function get_variables_string(): string
+    {
+        $segments = [];
+
+        foreach ($this->variables as $key => $variable)
+        {
+            $segments[ $key ] = '';
+
+            if ($this->is_associative_variables())
+            {
+                $segments[ $key ] .= $key . RouteArchitectConfig::URL_DELIMITER->get_config();
+            }
+
+            $segments[ $key ] .= sprintf(RouteArchitectConfig::URL_VARIABLE_TEMPLATE->get_config(), $variable);
+        }
+
+        return implode(RouteArchitectConfig::URL_DELIMITER->get_config(), $segments);
+    }
+
+    /**
      * Sets the given variables.
      *
      * @param string[] $variables
@@ -781,6 +839,16 @@ abstract class RouteArchitect
     public function has_variables(): bool
     {
         return !empty($this->variables);
+    }
+
+    /**
+     * Determines whether the variables are in associative form.
+     *
+     * @return bool
+     */
+    public function is_associative_variables(): bool
+    {
+        return $this->has_variables() && !array_is_list($this->variables);
     }
 
     /**
