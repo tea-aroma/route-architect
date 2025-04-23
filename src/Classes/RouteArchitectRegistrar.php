@@ -52,15 +52,15 @@ class RouteArchitectRegistrar
 
         $this->exclude_middlewares_processing();
 
+        $this->namespace_processing();
+
+        $this->domain_processing();
+
         $this->type_processing();
 
         $this->prefix_processing();
 
         $this->controller_processing();
-
-        $this->namespace_processing();
-
-        $this->domain_processing();
 
         $this->group_processing();
     }
@@ -174,6 +174,11 @@ class RouteArchitectRegistrar
      */
     protected function domain_processing(): void
     {
+        if (!$this->route_architect->has_domain())
+        {
+            return;
+        }
+
         $this->route->domain($this->route_architect->get_domain());
     }
 

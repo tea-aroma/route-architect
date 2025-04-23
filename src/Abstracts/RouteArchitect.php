@@ -501,12 +501,17 @@ abstract class RouteArchitect
     }
 
     /**
-     * Gets the domain.
+     * Gets the domain as a string.
      *
-     * @return \BackedEnum|string|null
+     * @return string|null
      */
-    public function get_domain(): \BackedEnum | string | null
+    public function get_domain(): string | null
     {
+        if ($this->domain instanceof \BackedEnum)
+        {
+            return $this->domain->value;
+        }
+
         return $this->domain;
     }
 
