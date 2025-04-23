@@ -18,6 +18,8 @@ enum RouteArchitectConfig: string
 
     case ROUTE_NAME_DELIMITER = 'route_name_delimiter';
 
+    case VIEW_NAME_DELIMITER = 'view_name_delimiter';
+
     case ACTION_DELIMITER = 'action_delimiter';
 
     /**
