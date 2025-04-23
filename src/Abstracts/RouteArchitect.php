@@ -69,6 +69,20 @@ abstract class RouteArchitect
     protected ?string $controller = null;
 
     /**
+     * The namespace.
+     *
+     * @var class-string|null
+     */
+    protected ?string $namespace = null;
+
+    /**
+     * The domain.
+     *
+     * @var class-string|null
+     */
+    protected \BackedEnum | string | null $domain = null;
+
+    /**
      * The custom url.
      *
      * @var string|null
@@ -453,6 +467,74 @@ abstract class RouteArchitect
     }
 
     /**
+     * Gets the namespace.
+     *
+     * @return string|null
+     */
+    public function get_namespace(): ?string
+    {
+        return $this->namespace;
+    }
+
+    /**
+     * Sets the given namespace.
+     *
+     * @param string $namespace
+     *
+     * @return static
+     */
+    public function set_namespace(string $namespace): static
+    {
+        $this->namespace = $namespace;
+
+        return $this;
+    }
+
+    /**
+     * Determines whether the namespace exists.
+     *
+     * @return bool
+     */
+    public function has_namespace(): bool
+    {
+        return !empty($this->namespace);
+    }
+
+    /**
+     * Gets the domain.
+     *
+     * @return \BackedEnum|string|null
+     */
+    public function get_domain(): \BackedEnum | string | null
+    {
+        return $this->domain;
+    }
+
+    /**
+     * Sets the given domain.
+     *
+     * @param \BackedEnum|string $domain
+     *
+     * @return static
+     */
+    public function set_domain(\BackedEnum | string $domain): static
+    {
+        $this->domain = $domain;
+
+        return $this;
+    }
+
+    /**
+     * Determines whether the domain exists.
+     *
+     * @return bool
+     */
+    public function has_domain(): bool
+    {
+        return !empty($this->domain);
+    }
+
+    /**
      * Gets the custom url.
      *
      * @return string|null
@@ -801,11 +883,11 @@ abstract class RouteArchitect
     }
 
     /**
-     * Gets the namespace.
+     * Gets the classname.
      *
      * @return string
      */
-    public function get_namespace(): string
+    public function get_classname(): string
     {
         return $this::class;
     }
