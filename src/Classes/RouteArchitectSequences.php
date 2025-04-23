@@ -137,7 +137,7 @@ class RouteArchitectSequences
      */
     public function get_sequence(RouteArchitect $route_architect): string | null
     {
-        return $this->sequences->get($route_architect->get_namespace());
+        return $this->sequences->get($route_architect->get_classname());
     }
 
     /**
@@ -161,7 +161,7 @@ class RouteArchitectSequences
      */
     public function has_sequence(RouteArchitect $route_architect): bool
     {
-        return $this->sequences->has($route_architect->get_namespace());
+        return $this->sequences->has($route_architect->get_classname());
     }
 
     /**
@@ -190,7 +190,7 @@ class RouteArchitectSequences
             return;
         }
 
-        $this->sequences->put($route_architect->get_namespace(), $this->get_value($route_architect));
+        $this->sequences->put($route_architect->get_classname(), $this->get_value($route_architect));
     }
 
     /**
@@ -205,6 +205,6 @@ class RouteArchitectSequences
     {
         $this->add_base_sequence($route_architect);
 
-        $this->sequences->put($nested_route_architect->get_namespace(), $this->get_sequence($route_architect) . $this->delimiter->get_config() . $this->get_value($nested_route_architect));
+        $this->sequences->put($nested_route_architect->get_classname(), $this->get_sequence($route_architect) . $this->delimiter->get_config() . $this->get_value($nested_route_architect));
     }
 }

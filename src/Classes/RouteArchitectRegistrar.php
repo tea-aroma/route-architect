@@ -154,6 +154,26 @@ class RouteArchitectRegistrar
     }
 
     /**
+     * Handles the process of the namespace.
+     *
+     * @return void
+     */
+    protected function namespace_processing(): void
+    {
+        $this->route->namespace($this->route_architect->get_namespace());
+    }
+
+    /**
+     * Handles the process of the domain.
+     *
+     * @return void
+     */
+    protected function domain_processing(): void
+    {
+        $this->route->domain($this->route_architect->get_domain());
+    }
+
+    /**
      * Handles the process of the group.
      *
      * @return void
