@@ -1,0 +1,18 @@
+<?php
+
+namespace {{namespace}};
+
+use TeaAroma\RouteArchitect\Abstracts\RouteArchitect;
+
+/**
+ * {{classname}}.
+ */
+class {{classname}} extends RouteArchitect
+{
+    /**
+     * The identifier.
+     *
+     * @var string
+     */
+    protected string $identifier = '{{identifier}}';
+}
