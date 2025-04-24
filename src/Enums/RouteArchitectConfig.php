@@ -8,6 +8,10 @@ namespace TeaAroma\RouteArchitect\Enums;
  */
 enum RouteArchitectConfig: string
 {
+    case DIRECTORY = 'directory';
+
+    case NAMESPACE = 'namespace';
+
     case AUTO_SCAN = 'auto_scan';
 
     case URL_VARIABLE_TEMPLATE = 'url_variable_template';
