@@ -55,7 +55,7 @@ class RouteArchitectGenerator
      *
      * @var string
      */
-    protected string $stub_path = 'Stubs/RouteArchitect.stub';
+    protected string $stub_path = __DIR__ . '/../Stubs/RouteArchitect.stub';
 
     /**
      * @param Command $command
@@ -92,6 +92,11 @@ class RouteArchitectGenerator
      */
     protected function extract_path(string $name): string
     {
+        if (!preg_match('/\/|\\\\/', $name))
+        {
+            return '';
+        }
+
         return preg_replace('/\W+\w*$/', '', $name);
     }
 
@@ -291,7 +296,14 @@ class RouteArchitectGenerator
      */
     public function get_directory(): string
     {
-        return app_path(RouteArchitectConfig::DIRECTORY->get_config()) . DIRECTORY_SEPARATOR . $this->directory;
+        $directory = $this->directory;
+
+        if (!empty($directory))
+        {
+            $directory = DIRECTORY_SEPARATOR . $directory;
+        }
+
+        return app_path(RouteArchitectConfig::DIRECTORY->get_config()) . $directory;
     }
 
     /**
@@ -315,7 +327,14 @@ class RouteArchitectGenerator
      */
     public function get_namespace(): string
     {
-        return RouteArchitectConfig::NAMESPACE->get_config() . '\\' . $this->namespace;
+        $namespace = $this->namespace;
+
+        if (!empty($this->namespace))
+        {
+            $namespace = '\\' . $namespace;
+        }
+
+        return RouteArchitectConfig::NAMESPACE->get_config() . $namespace;
     }
 
     /**
@@ -339,6 +358,6 @@ class RouteArchitectGenerator
      */
     public function get_stub_path(): string
     {
-        return app_path($this->stub_path);
+        return $this->stub_path;
     }
 }

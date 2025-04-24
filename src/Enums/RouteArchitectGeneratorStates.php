@@ -14,7 +14,7 @@ enum RouteArchitectGeneratorStates: string
 
     case DIRECTORY_CREATE_ERROR = 'Directory creation failed!';
 
-    case FILE_EXIST = 'RouteArchitect already exists!';
+    case FILE_EXIST = '[%s] already exists!';
 
     case FILE_CREATE_ERROR = 'File creation failed!';
 
