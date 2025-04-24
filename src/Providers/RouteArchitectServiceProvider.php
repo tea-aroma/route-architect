@@ -4,6 +4,7 @@ namespace TeaAroma\RouteArchitect\Providers;
 
 
 use Illuminate\Support\ServiceProvider;
+use TeaAroma\RouteArchitect\Console\Commands\MakeRouteArchitect;
 
 
 /**
@@ -26,6 +27,10 @@ class RouteArchitectServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        if ($this->app->runningInConsole()) {
+            $this->commands([ MakeRouteArchitect::class ]);
+        }
+
         $this->mergeConfigFrom(__DIR__ . '/../Config/route-architect.php', 'route-architect');
     }
 }
