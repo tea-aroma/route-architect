@@ -5,6 +5,7 @@ namespace TeaAroma\RouteArchitect\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use TeaAroma\RouteArchitect\Console\Commands\MakeRouteArchitect;
+use TeaAroma\RouteArchitect\Services\RouteArchitectService;
 
 
 /**
@@ -27,7 +28,10 @@ class RouteArchitectServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        if ($this->app->runningInConsole()) {
+        $this->app->singleton('route-architect', fn () => new RouteArchitectService());
+
+        if ($this->app->runningInConsole())
+        {
             $this->commands([ MakeRouteArchitect::class ]);
         }
 
