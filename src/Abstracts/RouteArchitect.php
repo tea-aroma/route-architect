@@ -362,7 +362,9 @@ abstract class RouteArchitect
 
         $url_delimiter = RouteArchitectConfig::URL_DELIMITER->get_config();
 
-        return $url_delimiter . $this->get_prefix() . $url_delimiter . $this->get_variables_string();
+        $url = $this->url ?? $this->identifier;
+
+        return $url_delimiter . $url . $url_delimiter . $this->get_variables_string();
     }
 
     /**
