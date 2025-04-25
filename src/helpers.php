@@ -1,6 +1,5 @@
 <?php
 
-use TeaAroma\RouteArchitect\Facades\RouteArchitect;
 use TeaAroma\RouteArchitect\Services\RouteArchitectService;
 
 
@@ -10,8 +9,8 @@ if (! function_exists('route_architect')) {
      *
      * @return RouteArchitectService
      */
-    function route_architect(): \TeaAroma\RouteArchitect\Services\RouteArchitectService
+    function route_architect(): RouteArchitectService
     {
-        return app(RouteArchitect::class);
+        return app(RouteArchitectService::class);
     }
 }
