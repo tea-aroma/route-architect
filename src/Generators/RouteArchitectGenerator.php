@@ -166,13 +166,6 @@ class RouteArchitectGenerator
 
         $this->file_processing();
 
-        if (!$this->is_success())
-        {
-            return $this->get_state();
-        }
-
-        $this->state = RouteArchitectGeneratorStates::SUCCESS;
-
         return $this->get_state();
     }
 
