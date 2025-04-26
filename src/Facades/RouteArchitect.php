@@ -7,8 +7,8 @@ use TeaAroma\RouteArchitect\Services\RouteArchitectService;
 
 
 /**
- * @method static string get_name_sequence(class-string<\TeaAroma\RouteArchitect\Abstracts\RouteArchitect> $namespace)
- * @method static string get_view_sequence(class-string<\TeaAroma\RouteArchitect\Abstracts\RouteArchitect> $namespace)
+ * @method static string getNameSequence(class-string<\TeaAroma\RouteArchitect\Abstracts\RouteArchitect> $namespace)
+ * @method static string getViewSequence(class-string<\TeaAroma\RouteArchitect\Abstracts\RouteArchitect> $namespace)
  * @method static void register(class-string<\TeaAroma\RouteArchitect\Abstracts\RouteArchitect> $namespace)
  *
  * @see RouteArchitectService

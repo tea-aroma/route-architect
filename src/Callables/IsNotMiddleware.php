@@ -20,6 +20,6 @@ class IsNotMiddleware
      */
     public function __invoke(string $middleware): string
     {
-        return !RouteArchitectHelpers::is_middleware($middleware);
+        return !RouteArchitectHelpers::isMiddleware($middleware);
     }
 }

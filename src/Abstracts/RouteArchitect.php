@@ -93,7 +93,7 @@ abstract class RouteArchitect
      *
      * @var string|null
      */
-    protected ?string $custom_url = null;
+    protected ?string $customUrl = null;
 
     /**
      * The middleware(s).
@@ -107,28 +107,28 @@ abstract class RouteArchitect
      *
      * @var RouteArchitectMiddlewares
      */
-    private RouteArchitectMiddlewares $middlewares_manager;
+    private RouteArchitectMiddlewares $middlewaresManager;
 
     /**
      * The middlewares to exclude.
      *
      * @var class-string[]
      */
-    protected array $exclude_middlewares = [];
+    protected array $excludeMiddlewares = [];
 
     /**
      * The manager of the middlewares to exclude.
      *
      * @var RouteArchitectMiddlewares
      */
-    private RouteArchitectMiddlewares $exclude_middlewares_manager;
+    private RouteArchitectMiddlewares $excludeMiddlewaresManager;
 
     /**
      * The 'RouteArchitect' classes.
      *
      * @var class-string<RouteArchitect>[]
      */
-    protected array $route_architects = [];
+    protected array $routeArchitects = [];
 
     /**
      * The variables.
@@ -142,27 +142,27 @@ abstract class RouteArchitect
      *
      * @var RouteArchitectSequences
      */
-    static protected RouteArchitectSequences $name_sequences;
+    static protected RouteArchitectSequences $nameSequences;
 
     /**
      * The sequences of views.
      *
      * @var RouteArchitectSequences
      */
-    static protected RouteArchitectSequences $view_sequences;
+    static protected RouteArchitectSequences $viewSequences;
 
     /**
      * The constructor.
      */
     public function __construct()
     {
-        self::$name_sequences ??= new RouteArchitectSequences(RouteArchitectSequenceTypes::NAMES);
+        self::$nameSequences ??= new RouteArchitectSequences(RouteArchitectSequenceTypes::NAMES);
 
-        self::$view_sequences ??= new RouteArchitectSequences(RouteArchitectSequenceTypes::VIEWS);
+        self::$viewSequences ??= new RouteArchitectSequences(RouteArchitectSequenceTypes::VIEWS);
 
-        $this->middlewares_manager = new RouteArchitectMiddlewares($this->middlewares);
+        $this->middlewaresManager = new RouteArchitectMiddlewares($this->middlewares);
 
-        $this->exclude_middlewares_manager = new RouteArchitectMiddlewares($this->exclude_middlewares);
+        $this->excludeMiddlewaresManager = new RouteArchitectMiddlewares($this->excludeMiddlewares);
     }
 
     /**
@@ -192,7 +192,7 @@ abstract class RouteArchitect
      *
      * @return \Closure
      */
-    public function get_handle(): \Closure
+    public function getHandle(): \Closure
     {
         return $this->handle( ... );
     }
@@ -205,7 +205,7 @@ abstract class RouteArchitect
      *
      * @return string
      */
-    public function normalize_with_delimiter(string $input, string $delimiter): string
+    public function normalizeWithDelimiter(string $input, string $delimiter): string
     {
         $segments = preg_split('/[^a-z0-9]+/i', $input, flags: PREG_SPLIT_NO_EMPTY);
 
@@ -217,7 +217,7 @@ abstract class RouteArchitect
      *
      * @return string
      */
-    public function get_identifier(): string
+    public function getIdentifier(): string
     {
         return $this->identifier;
     }
@@ -229,7 +229,7 @@ abstract class RouteArchitect
      *
      * @return static
      */
-    public function set_identifier(string $identifier): static
+    public function setIdentifier(string $identifier): static
     {
         $this->identifier = $identifier;
 
@@ -241,7 +241,7 @@ abstract class RouteArchitect
      *
      * @return bool
      */
-    public function has_identifier(): bool
+    public function hasIdentifier(): bool
     {
         return !empty($this->identifier);
     }
@@ -251,9 +251,9 @@ abstract class RouteArchitect
      *
      * @return string
      */
-    public function get_name(): string
+    public function getName(): string
     {
-        return $this->normalize_with_delimiter($this->name ?? $this->identifier, RouteArchitectConfig::ROUTE_NAME_DELIMITER->get_config());
+        return $this->normalizeWithDelimiter($this->name ?? $this->identifier, RouteArchitectConfig::ROUTE_NAME_DELIMITER->getConfig());
     }
 
     /**
@@ -263,7 +263,7 @@ abstract class RouteArchitect
      *
      * @return static
      */
-    public function set_name(string $name): static
+    public function setName(string $name): static
     {
         $this->name = $name;
 
@@ -275,7 +275,7 @@ abstract class RouteArchitect
      *
      * @return bool
      */
-    public function has_name(): bool
+    public function hasName(): bool
     {
         return !empty($this->name);
     }
@@ -285,9 +285,9 @@ abstract class RouteArchitect
      *
      * @return string
      */
-    public function get_view(): string
+    public function getView(): string
     {
-        return $this->normalize_with_delimiter($this->view ?? $this->identifier, RouteArchitectConfig::VIEW_NAME_DELIMITER->get_config());
+        return $this->normalizeWithDelimiter($this->view ?? $this->identifier, RouteArchitectConfig::VIEW_NAME_DELIMITER->getConfig());
     }
 
     /**
@@ -297,7 +297,7 @@ abstract class RouteArchitect
      *
      * @return static
      */
-    public function set_view(string $view): static
+    public function setView(string $view): static
     {
         $this->view = $view;
 
@@ -309,7 +309,7 @@ abstract class RouteArchitect
      *
      * @return bool
      */
-    public function has_view(): bool
+    public function hasView(): bool
     {
         return !empty($this->view);
     }
@@ -319,9 +319,9 @@ abstract class RouteArchitect
      *
      * @return string
      */
-    public function get_prefix(): string
+    public function getPrefix(): string
     {
-        return $this->normalize_with_delimiter($this->prefix ?? $this->identifier, RouteArchitectConfig::URL_SEGMENT_DELIMITER->get_config());
+        return $this->normalizeWithDelimiter($this->prefix ?? $this->identifier, RouteArchitectConfig::URL_SEGMENT_DELIMITER->getConfig());
     }
 
     /**
@@ -331,7 +331,7 @@ abstract class RouteArchitect
      *
      * @return $this
      */
-    public function set_prefix(string $prefix): static
+    public function setPrefix(string $prefix): static
     {
         $this->prefix = $prefix;
 
@@ -343,7 +343,7 @@ abstract class RouteArchitect
      *
      * @return bool
      */
-    public function has_prefix(): bool
+    public function hasPrefix(): bool
     {
         return !empty($this->prefix);
     }
@@ -353,18 +353,18 @@ abstract class RouteArchitect
      *
      * @return string
      */
-    public function get_url(): string
+    public function getUrl(): string
     {
-        if ($this->has_custom_url())
+        if ($this->hasCustomUrl())
         {
-            return $this->custom_url;
+            return $this->customUrl;
         }
 
-        $url_delimiter = RouteArchitectConfig::URL_DELIMITER->get_config();
+        $urlDelimiter = RouteArchitectConfig::URL_DELIMITER->getConfig();
 
         $url = $this->url ?? $this->identifier;
 
-        return $url_delimiter . $url . $url_delimiter . $this->get_variables_string();
+        return $urlDelimiter . $url . $urlDelimiter . $this->getVariablesString();
     }
 
     /**
@@ -374,7 +374,7 @@ abstract class RouteArchitect
      *
      * @return void
      */
-    public function set_url(string $url): void
+    public function setUrl(string $url): void
     {
         $this->url = $url;
     }
@@ -384,7 +384,7 @@ abstract class RouteArchitect
      *
      * @return bool
      */
-    public function has_url(): bool
+    public function hasUrl(): bool
     {
         return !empty($this->url);
     }
@@ -394,7 +394,7 @@ abstract class RouteArchitect
      *
      * @return RouteArchitectTypes
      */
-    public function get_type(): RouteArchitectTypes
+    public function getType(): RouteArchitectTypes
     {
         return $this->type;
     }
@@ -406,7 +406,7 @@ abstract class RouteArchitect
      *
      * @return $this
      */
-    public function set_type(RouteArchitectTypes $type): static
+    public function setType(RouteArchitectTypes $type): static
     {
         $this->type = $type;
 
@@ -418,7 +418,7 @@ abstract class RouteArchitect
      *
      * @return bool
      */
-    public function has_type(): bool
+    public function hasType(): bool
     {
         return !empty($this->type);
     }
@@ -428,16 +428,16 @@ abstract class RouteArchitect
      *
      * @return array<class-string, string>|string|callable
      */
-    public function get_action(): array | string | callable
+    public function getAction(): array | string | callable
     {
-        if (!$this->has_action())
+        if (!$this->hasAction())
         {
-            return $this->get_handle();
+            return $this->getHandle();
         }
 
-        if ($this->has_controller() && is_string($this->action))
+        if ($this->hasController() && is_string($this->action))
         {
-            return $this->get_controller() . RouteArchitectConfig::ACTION_DELIMITER->get_config() . $this->action;
+            return $this->getController() . RouteArchitectConfig::ACTION_DELIMITER->getConfig() . $this->action;
         }
 
         return $this->action;
@@ -450,7 +450,7 @@ abstract class RouteArchitect
      *
      * @return static
      */
-    public function set_action(array | string $action): static
+    public function setAction(array | string $action): static
     {
         $this->action = $action;
 
@@ -462,7 +462,7 @@ abstract class RouteArchitect
      *
      * @return bool
      */
-    public function has_action(): bool
+    public function hasAction(): bool
     {
         return !empty($this->action);
     }
@@ -472,7 +472,7 @@ abstract class RouteArchitect
      *
      * @return string|null
      */
-    public function get_controller(): ?string
+    public function getController(): ?string
     {
         return $this->controller;
     }
@@ -484,7 +484,7 @@ abstract class RouteArchitect
      *
      * @return static
      */
-    public function set_controller(string $controller): static
+    public function setController(string $controller): static
     {
         $this->controller = $controller;
 
@@ -496,7 +496,7 @@ abstract class RouteArchitect
      *
      * @return bool
      */
-    public function has_controller(): bool
+    public function hasController(): bool
     {
         return !empty($this->controller);
     }
@@ -506,7 +506,7 @@ abstract class RouteArchitect
      *
      * @return string|null
      */
-    public function get_namespace(): ?string
+    public function getNamespace(): ?string
     {
         return $this->namespace;
     }
@@ -518,7 +518,7 @@ abstract class RouteArchitect
      *
      * @return static
      */
-    public function set_namespace(string $namespace): static
+    public function setNamespace(string $namespace): static
     {
         $this->namespace = $namespace;
 
@@ -530,7 +530,7 @@ abstract class RouteArchitect
      *
      * @return bool
      */
-    public function has_namespace(): bool
+    public function hasNamespace(): bool
     {
         return !empty($this->namespace);
     }
@@ -540,7 +540,7 @@ abstract class RouteArchitect
      *
      * @return string|null
      */
-    public function get_domain(): string | null
+    public function getDomain(): string | null
     {
         if ($this->domain instanceof \BackedEnum)
         {
@@ -557,7 +557,7 @@ abstract class RouteArchitect
      *
      * @return static
      */
-    public function set_domain(\BackedEnum | string $domain): static
+    public function setDomain(\BackedEnum | string $domain): static
     {
         $this->domain = $domain;
 
@@ -569,7 +569,7 @@ abstract class RouteArchitect
      *
      * @return bool
      */
-    public function has_domain(): bool
+    public function hasDomain(): bool
     {
         return !empty($this->domain);
     }
@@ -579,21 +579,21 @@ abstract class RouteArchitect
      *
      * @return string|null
      */
-    public function get_custom_url(): ?string
+    public function getCustomUrl(): ?string
     {
-        return $this->custom_url;
+        return $this->customUrl;
     }
 
     /**
      * Sets the given custom url.
      *
-     * @param string $custom_url
+     * @param string $customUrl
      *
      * @return static
      */
-    public function set_custom_url(string $custom_url): static
+    public function setCustomUrl(string $customUrl): static
     {
-        $this->custom_url = $custom_url;
+        $this->customUrl = $customUrl;
 
         return $this;
     }
@@ -603,9 +603,9 @@ abstract class RouteArchitect
      *
      * @return bool
      */
-    public function has_custom_url(): bool
+    public function hasCustomUrl(): bool
     {
-        return !empty($this->custom_url);
+        return !empty($this->customUrl);
     }
 
     /**
@@ -613,9 +613,9 @@ abstract class RouteArchitect
      *
      * @return Collection<class-string>
      */
-    public function get_middlewares(): Collection
+    public function getMiddlewares(): Collection
     {
-        return $this->middlewares_manager->get_middlewares();
+        return $this->middlewaresManager->getMiddlewares();
     }
 
     /**
@@ -623,9 +623,9 @@ abstract class RouteArchitect
      *
      * @return class-string[]
      */
-    public function get_middlewares_array(): array
+    public function getMiddlewaresArray(): array
     {
-        return $this->middlewares_manager->to_array();
+        return $this->middlewaresManager->toArray();
     }
 
     /**
@@ -635,9 +635,9 @@ abstract class RouteArchitect
      *
      * @return static
      */
-    public function set_middlewares(Collection $middlewares): static
+    public function setMiddlewares(Collection $middlewares): static
     {
-        $this->middlewares_manager->set_middlewares($middlewares);
+        $this->middlewaresManager->setMiddlewares($middlewares);
 
         return $this;
     }
@@ -649,9 +649,9 @@ abstract class RouteArchitect
      *
      * @return static
      */
-    public function add_middleware(array | string $middleware): static
+    public function addMiddleware(array | string $middleware): static
     {
-        $this->middlewares_manager->add_middlewares($middleware);
+        $this->middlewaresManager->addMiddlewares($middleware);
 
         return $this;
     }
@@ -661,9 +661,9 @@ abstract class RouteArchitect
      *
      * @return bool
      */
-    public function has_middlewares(): bool
+    public function hasMiddlewares(): bool
     {
-        return !$this->middlewares_manager->is_empty();
+        return !$this->middlewaresManager->isEmpty();
     }
 
     /**
@@ -671,9 +671,9 @@ abstract class RouteArchitect
      *
      * @return Collection<class-string>
      */
-    public function get_exclude_middlewares(): Collection
+    public function getExcludeMiddlewares(): Collection
     {
-        return $this->exclude_middlewares_manager->get_middlewares();
+        return $this->excludeMiddlewaresManager->getMiddlewares();
     }
 
     /**
@@ -681,9 +681,9 @@ abstract class RouteArchitect
      *
      * @return class-string[]
      */
-    public function get_exclude_middlewares_array(): array
+    public function getExcludeMiddlewaresArray(): array
     {
-        return $this->exclude_middlewares_manager->to_array();
+        return $this->excludeMiddlewaresManager->toArray();
     }
 
     /**
@@ -693,9 +693,9 @@ abstract class RouteArchitect
      *
      * @return static
      */
-    public function set_exclude_middlewares(Collection $middlewares): static
+    public function setExcludeMiddlewares(Collection $middlewares): static
     {
-        $this->exclude_middlewares_manager->set_middlewares($middlewares);
+        $this->excludeMiddlewaresManager->setMiddlewares($middlewares);
 
         return $this;
     }
@@ -707,9 +707,9 @@ abstract class RouteArchitect
      *
      * @return static
      */
-    public function add_exclude_middleware(array | string $middleware): static
+    public function addExcludeMiddleware(array | string $middleware): static
     {
-        $this->exclude_middlewares_manager->add_middlewares($middleware);
+        $this->excludeMiddlewaresManager->addMiddlewares($middleware);
 
         return $this;
     }
@@ -719,9 +719,9 @@ abstract class RouteArchitect
      *
      * @return bool
      */
-    public function has_exclude_middlewares(): bool
+    public function hasExcludeMiddlewares(): bool
     {
-        return !$this->exclude_middlewares_manager->is_empty();
+        return !$this->excludeMiddlewaresManager->isEmpty();
     }
 
     /**
@@ -729,21 +729,21 @@ abstract class RouteArchitect
      *
      * @return string-class<RouteArchitect>[]
      */
-    public function get_route_architects(): array
+    public function getRouteArchitects(): array
     {
-        return $this->route_architects;
+        return $this->routeArchitects;
     }
 
     /**
      * Sets the given 'RouteArchitects' classes.
      *
-     * @param class-string<RouteArchitect>[] $route_architects
+     * @param class-string<RouteArchitect>[] $routeArchitects
      *
      * @return static
      */
-    public function set_route_architects(array $route_architects): static
+    public function setRouteArchitects(array $routeArchitects): static
     {
-        $this->route_architects = $route_architects;
+        $this->routeArchitects = $routeArchitects;
 
         return $this;
     }
@@ -751,13 +751,13 @@ abstract class RouteArchitect
     /**
      * Appends one or more 'RouteArchitect' class to the existing list.
      *
-     * @param class-string<RouteArchitect>[]|class-string<RouteArchitect> $route_architects
+     * @param class-string<RouteArchitect>[]|class-string<RouteArchitect> $routeArchitects
      *
      * @return static
      */
-    public function add_route_architect(array | string $route_architects): static
+    public function addRouteArchitect(array | string $routeArchitects): static
     {
-        $this->route_architects = array_merge($this->route_architects, (array) $route_architects);
+        $this->routeArchitects = array_merge($this->routeArchitects, (array) $routeArchitects);
 
         return $this;
     }
@@ -767,9 +767,9 @@ abstract class RouteArchitect
      *
      * @return bool
      */
-    public function has_route_architects(): bool
+    public function hasRouteArchitects(): bool
     {
-        return !empty($this->route_architects);
+        return !empty($this->routeArchitects);
     }
 
     /**
@@ -777,7 +777,7 @@ abstract class RouteArchitect
      *
      * @return string[]
      */
-    public function get_variables(): array
+    public function getVariables(): array
     {
         return $this->variables;
     }
@@ -787,7 +787,7 @@ abstract class RouteArchitect
      *
      * @return string
      */
-    public function get_variables_string(): string
+    public function getVariablesString(): string
     {
         $segments = [];
 
@@ -795,15 +795,15 @@ abstract class RouteArchitect
         {
             $segments[ $key ] = '';
 
-            if ($this->is_associative_variables())
+            if ($this->isAssociativeVariables())
             {
-                $segments[ $key ] .= $key . RouteArchitectConfig::URL_DELIMITER->get_config();
+                $segments[ $key ] .= $key . RouteArchitectConfig::URL_DELIMITER->getConfig();
             }
 
-            $segments[ $key ] .= sprintf(RouteArchitectConfig::URL_VARIABLE_TEMPLATE->get_config(), $variable);
+            $segments[ $key ] .= sprintf(RouteArchitectConfig::URL_VARIABLE_TEMPLATE->getConfig(), $variable);
         }
 
-        return implode(RouteArchitectConfig::URL_DELIMITER->get_config(), $segments);
+        return implode(RouteArchitectConfig::URL_DELIMITER->getConfig(), $segments);
     }
 
     /**
@@ -813,7 +813,7 @@ abstract class RouteArchitect
      *
      * @return void
      */
-    public function set_variables(array $variables): void
+    public function setVariables(array $variables): void
     {
         $this->variables = $variables;
     }
@@ -825,7 +825,7 @@ abstract class RouteArchitect
      *
      * @return $this
      */
-    public function add_variable(array | string $variables): static
+    public function addVariable(array | string $variables): static
     {
         $this->variables = array_merge($this->variables, (array) $variables);
 
@@ -837,7 +837,7 @@ abstract class RouteArchitect
      *
      * @return bool
      */
-    public function has_variables(): bool
+    public function hasVariables(): bool
     {
         return !empty($this->variables);
     }
@@ -847,9 +847,9 @@ abstract class RouteArchitect
      *
      * @return bool
      */
-    public function is_associative_variables(): bool
+    public function isAssociativeVariables(): bool
     {
-        return $this->has_variables() && !array_is_list($this->variables);
+        return $this->hasVariables() && !array_is_list($this->variables);
     }
 
     /**
@@ -857,9 +857,9 @@ abstract class RouteArchitect
      *
      * @return RouteArchitectSequences
      */
-    public function get_name_sequences(): RouteArchitectSequences
+    public function getNameSequences(): RouteArchitectSequences
     {
-        return self::$name_sequences;
+        return self::$nameSequences;
     }
 
     /**
@@ -867,21 +867,21 @@ abstract class RouteArchitect
      *
      * @return string|null
      */
-    public function get_name_sequence(): string | null
+    public function getNameSequence(): string | null
     {
-        return self::$name_sequences->get_sequence($this);
+        return self::$nameSequences->getSequence($this);
     }
 
     /**
      * Appends the sequence of the name.
      *
-     * @param RouteArchitect $route_architect
+     * @param RouteArchitect $routeArchitect
      *
      * @return static
      */
-    public function add_name_sequence(RouteArchitect $route_architect): static
+    public function addNameSequence(RouteArchitect $routeArchitect): static
     {
-        self::$name_sequences->add_sequence($route_architect, $this);
+        self::$nameSequences->addSequence($routeArchitect, $this);
 
         return $this;
     }
@@ -891,9 +891,9 @@ abstract class RouteArchitect
      *
      * @return bool
      */
-    public function has_name_sequence(): bool
+    public function hasNameSequence(): bool
     {
-        return self::$name_sequences->has_sequence($this);
+        return self::$nameSequences->hasSequence($this);
     }
 
     /**
@@ -901,9 +901,9 @@ abstract class RouteArchitect
      *
      * @return RouteArchitectSequences
      */
-    public function get_view_sequences(): RouteArchitectSequences
+    public function getViewSequences(): RouteArchitectSequences
     {
-        return self::$view_sequences;
+        return self::$viewSequences;
     }
 
     /**
@@ -911,21 +911,21 @@ abstract class RouteArchitect
      *
      * @return string|null
      */
-    public function get_view_sequence(): string | null
+    public function getViewSequence(): string | null
     {
-        return self::$view_sequences->get_sequence($this);
+        return self::$viewSequences->getSequence($this);
     }
 
     /**
      * Appends one or more sequence of the view.
      *
-     * @param RouteArchitect $route_architect
+     * @param RouteArchitect $routeArchitect
      *
      * @return static
      */
-    public function add_view_sequence(RouteArchitect $route_architect): static
+    public function addViewSequence(RouteArchitect $routeArchitect): static
     {
-        self::$view_sequences->add_sequence($route_architect, $this);
+        self::$viewSequences->addSequence($routeArchitect, $this);
 
         return $this;
     }
@@ -935,23 +935,23 @@ abstract class RouteArchitect
      *
      * @return bool
      */
-    public function has_view_sequence(): bool
+    public function hasViewSequence(): bool
     {
-        return self::$view_sequences->has_sequence($this);
+        return self::$viewSequences->hasSequence($this);
     }
 
     /**
      * Implements the process of appending sequences by the given instance.
      *
-     * @param RouteArchitect $route_architect
+     * @param RouteArchitect $routeArchitect
      *
      * @return static
      */
-    public function add_sequences_processing(RouteArchitect $route_architect): static
+    public function addSequencesProcessing(RouteArchitect $routeArchitect): static
     {
-        self::add_name_sequence($route_architect);
+        self::addNameSequence($routeArchitect);
 
-        self::add_view_sequence($route_architect);
+        self::addViewSequence($routeArchitect);
 
         return $this;
     }
@@ -961,7 +961,7 @@ abstract class RouteArchitect
      *
      * @return string
      */
-    public function get_classname(): string
+    public function getClassname(): string
     {
         return $this::class;
     }
@@ -971,8 +971,8 @@ abstract class RouteArchitect
      *
      * @return string
      */
-    public function is_group(): string
+    public function isGroup(): string
     {
-        return $this->has_route_architects();
+        return $this->hasRouteArchitects();
     }
 }

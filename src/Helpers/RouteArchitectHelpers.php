@@ -20,7 +20,7 @@ class RouteArchitectHelpers
      *
      * @return bool
      */
-    static public function is_middleware(string | array $middleware): bool
+    static public function isMiddleware(string | array $middleware): bool
     {
         if (is_array($middleware))
         {

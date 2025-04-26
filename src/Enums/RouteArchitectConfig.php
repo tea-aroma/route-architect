@@ -31,7 +31,7 @@ enum RouteArchitectConfig: string
      *
      * @return string
      */
-    public function get_config(): string
+    public function getConfig(): string
     {
         return config('route-architect.' . $this->value);
     }

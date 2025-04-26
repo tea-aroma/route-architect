@@ -20,7 +20,7 @@ class RouteArchitectRegistrar
      *
      * @var RouteArchitect
      */
-    private RouteArchitect $route_architect;
+    private RouteArchitect $routeArchitect;
 
     /**
      * The context of the 'Route'.
@@ -30,11 +30,11 @@ class RouteArchitectRegistrar
     private RouteRegistrar | Router $route;
 
     /**
-     * @param RouteArchitect $route_architect
+     * @param RouteArchitect $routeArchitect
      */
-    public function __construct(RouteArchitect $route_architect)
+    public function __construct(RouteArchitect $routeArchitect)
     {
-        $this->route_architect = $route_architect;
+        $this->routeArchitect = $routeArchitect;
 
         $this->route = new RouteRegistrar(Route::getFacadeRoot());
     }
@@ -46,23 +46,23 @@ class RouteArchitectRegistrar
      */
     public function register(): void
     {
-        $this->name_processing();
+        $this->nameProcessing();
 
-        $this->middlewares_processing();
+        $this->middlewaresProcessing();
 
-        $this->exclude_middlewares_processing();
+        $this->excludeMiddlewaresProcessing();
 
-        $this->namespace_processing();
+        $this->namespaceProcessing();
 
-        $this->domain_processing();
+        $this->domainProcessing();
 
-        $this->type_processing();
+        $this->typeProcessing();
 
-        $this->prefix_processing();
+        $this->prefixProcessing();
 
-        $this->controller_processing();
+        $this->controllerProcessing();
 
-        $this->group_processing();
+        $this->groupProcessing();
     }
 
     /**
@@ -70,13 +70,13 @@ class RouteArchitectRegistrar
      *
      * @return void
      */
-    protected function name_processing(): void
+    protected function nameProcessing(): void
     {
-        $name = $this->route_architect->get_name();
+        $name = $this->routeArchitect->getName();
 
-        if ($this->route_architect->has_name_sequence())
+        if ($this->routeArchitect->hasNameSequence())
         {
-            $name = RouteArchitectConfig::ROUTE_NAME_DELIMITER->get_config() . $name;
+            $name = RouteArchitectConfig::ROUTE_NAME_DELIMITER->getConfig() . $name;
         }
 
         $this->route->name($name);
@@ -87,14 +87,14 @@ class RouteArchitectRegistrar
      *
      * @return void
      */
-    protected function middlewares_processing(): void
+    protected function middlewaresProcessing(): void
     {
-        if (!$this->route_architect->has_middlewares())
+        if (!$this->routeArchitect->hasMiddlewares())
         {
             return;
         }
 
-        $this->route->middleware($this->route_architect->get_middlewares_array());
+        $this->route->middleware($this->routeArchitect->getMiddlewaresArray());
     }
 
     /**
@@ -102,14 +102,14 @@ class RouteArchitectRegistrar
      *
      * @return void
      */
-    protected function exclude_middlewares_processing(): void
+    protected function excludeMiddlewaresProcessing(): void
     {
-        if (!$this->route_architect->has_exclude_middlewares())
+        if (!$this->routeArchitect->hasExcludeMiddlewares())
         {
             return;
         }
 
-        $this->route->withoutMiddleware($this->route_architect->get_exclude_middlewares_array());
+        $this->route->withoutMiddleware($this->routeArchitect->getExcludeMiddlewaresArray());
     }
 
     /**
@@ -117,14 +117,14 @@ class RouteArchitectRegistrar
      *
      * @return void
      */
-    protected function type_processing(): void
+    protected function typeProcessing(): void
     {
-        if ($this->route_architect->is_group() && !$this->route_architect->has_action())
+        if ($this->routeArchitect->isGroup() && !$this->routeArchitect->hasAction())
         {
             return;
         }
 
-        $this->route->{ $this->route_architect->get_type()->value }($this->route_architect->get_url(), $this->route_architect->get_action());
+        $this->route->{ $this->routeArchitect->getType()->value }($this->routeArchitect->getUrl(), $this->routeArchitect->getAction());
     }
 
     /**
@@ -132,14 +132,14 @@ class RouteArchitectRegistrar
      *
      * @return void
      */
-    protected function prefix_processing(): void
+    protected function prefixProcessing(): void
     {
-        if (!$this->route_architect->is_group())
+        if (!$this->routeArchitect->isGroup())
         {
             return;
         }
 
-        $this->route->prefix($this->route_architect->get_prefix());
+        $this->route->prefix($this->routeArchitect->getPrefix());
     }
 
     /**
@@ -147,14 +147,14 @@ class RouteArchitectRegistrar
      *
      * @return void
      */
-    protected function controller_processing(): void
+    protected function controllerProcessing(): void
     {
-        if (!$this->route_architect->has_controller())
+        if (!$this->routeArchitect->hasController())
         {
             return;
         }
 
-        $this->route->controller($this->route_architect->get_controller());
+        $this->route->controller($this->routeArchitect->getController());
     }
 
     /**
@@ -162,9 +162,9 @@ class RouteArchitectRegistrar
      *
      * @return void
      */
-    protected function namespace_processing(): void
+    protected function namespaceProcessing(): void
     {
-        $this->route->namespace($this->route_architect->get_namespace());
+        $this->route->namespace($this->routeArchitect->getNamespace());
     }
 
     /**
@@ -172,14 +172,14 @@ class RouteArchitectRegistrar
      *
      * @return void
      */
-    protected function domain_processing(): void
+    protected function domainProcessing(): void
     {
-        if (!$this->route_architect->has_domain())
+        if (!$this->routeArchitect->hasDomain())
         {
             return;
         }
 
-        $this->route->domain($this->route_architect->get_domain());
+        $this->route->domain($this->routeArchitect->getDomain());
     }
 
     /**
@@ -187,14 +187,14 @@ class RouteArchitectRegistrar
      *
      * @return void
      */
-    protected function group_processing(): void
+    protected function groupProcessing(): void
     {
-        if (!$this->route_architect->is_group())
+        if (!$this->routeArchitect->isGroup())
         {
             return;
         }
 
-        $this->route->group($this->group_handle( ... ));
+        $this->route->group($this->groupHandle( ... ));
     }
 
     /**
@@ -204,18 +204,18 @@ class RouteArchitectRegistrar
      *
      * @return void
      */
-    protected function group_handle(Router $router): void
+    protected function groupHandle(Router $router): void
     {
-        foreach ($this->route_architect->get_route_architects() as $route_architect)
+        foreach ($this->routeArchitect->getRouteArchitects() as $routeArchitect)
         {
             /**
-             * @var RouteArchitect $route_architect
+             * @var RouteArchitect $routeArchitect
              */
-            $route_architect = new $route_architect();
+            $routeArchitect = new $routeArchitect();
 
-            $route_architect->add_sequences_processing($this->route_architect);
+            $routeArchitect->addSequencesProcessing($this->routeArchitect);
 
-            $route_architect->register();
+            $routeArchitect->register();
         }
     }
 
@@ -224,9 +224,9 @@ class RouteArchitectRegistrar
      *
      * @return RouteArchitect
      */
-    public function get_route_architect(): RouteArchitect
+    public function getRouteArchitect(): RouteArchitect
     {
-        return $this->route_architect;
+        return $this->routeArchitect;
     }
 
     /**
@@ -234,7 +234,7 @@ class RouteArchitectRegistrar
      *
      * @return RouteRegistrar|Router
      */
-    public function get_route(): RouteRegistrar | Router
+    public function getRoute(): RouteRegistrar | Router
     {
         return $this->route;
     }
@@ -246,7 +246,7 @@ class RouteArchitectRegistrar
      *
      * @return void
      */
-    public function set_route(RouteRegistrar | Router $route): void
+    public function setRoute(RouteRegistrar | Router $route): void
     {
         $this->route = $route;
     }

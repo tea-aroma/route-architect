@@ -41,9 +41,9 @@ class RouteArchitectStub
      *
      * @return string
      */
-    protected function get_stub_content(): string
+    protected function getStubContent(): string
     {
-        return File::get($this->get_path());
+        return File::get($this->getPath());
     }
 
     /**
@@ -51,9 +51,9 @@ class RouteArchitectStub
      *
      * @return string
      */
-    public function get_content(): string
+    public function getContent(): string
     {
-        return strtr($this->get_stub_content(), $this->get_replacements());
+        return strtr($this->getStubContent(), $this->getReplacements());
     }
 
     /**
@@ -61,12 +61,12 @@ class RouteArchitectStub
      *
      * @return array
      */
-    protected function get_replacements(): array
+    protected function getReplacements(): array
     {
         return [
-            '{{classname}}' => $this->generator->get_classname(),
-            '{{namespace}}' => $this->generator->get_namespace(),
-            '{{identifier}}' => $this->generator->get_identifier()
+            '{{classname}}' => $this->generator->getClassname(),
+            '{{namespace}}' => $this->generator->getNamespace(),
+            '{{identifier}}' => $this->generator->getIdentifier()
         ];
     }
 
@@ -75,7 +75,7 @@ class RouteArchitectStub
      *
      * @return string
      */
-    public function get_path(): string
+    public function getPath(): string
     {
         return $this->path;
     }

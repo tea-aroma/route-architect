@@ -18,9 +18,9 @@ class RouteArchitectService
      *
      * @return string
      */
-    public function get_route_name(string $namespace): string
+    public function getRouteName(string $namespace): string
     {
-        return (new $namespace())->get_name_sequence();
+        return (new $namespace())->getNameSequence();
     }
 
     /**
@@ -30,9 +30,9 @@ class RouteArchitectService
      *
      * @return string
      */
-    public function get_view_name(string $namespace): string
+    public function getViewName(string $namespace): string
     {
-        return (new $namespace())->get_view_sequence();
+        return (new $namespace())->getViewSequence();
     }
 
     /**

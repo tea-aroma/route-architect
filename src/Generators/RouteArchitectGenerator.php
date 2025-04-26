@@ -55,7 +55,7 @@ class RouteArchitectGenerator
      *
      * @var string
      */
-    protected string $stub_path = __DIR__ . '/../Stubs/RouteArchitect.stub';
+    protected string $stubPath = __DIR__ . '/../Stubs/RouteArchitect.stub';
 
     /**
      * @param Command $command
@@ -64,11 +64,11 @@ class RouteArchitectGenerator
     {
         $this->command = $command;
 
-        $this->set_name($this->extract_name($this->get_argument('name')));
+        $this->setName($this->extractName($this->getArgument('name')));
 
-        $this->set_directory($this->extract_path($this->get_argument('name')));
+        $this->setDirectory($this->extractPath($this->getArgument('name')));
 
-        $this->set_namespace($this->extract_path($this->get_argument('name')));
+        $this->setNamespace($this->extractPath($this->getArgument('name')));
     }
 
     /**
@@ -78,7 +78,7 @@ class RouteArchitectGenerator
      *
      * @return string
      */
-    protected function extract_name(string $name): string
+    protected function extractName(string $name): string
     {
         return preg_replace('/^.*\W+/', '', $name);
     }
@@ -90,7 +90,7 @@ class RouteArchitectGenerator
      *
      * @return string
      */
-    protected function extract_path(string $name): string
+    protected function extractPath(string $name): string
     {
         if (!preg_match('/\/|\\\\/', $name))
         {
@@ -105,14 +105,14 @@ class RouteArchitectGenerator
      *
      * @return void
      */
-    protected function directory_processing(): void
+    protected function directoryProcessing(): void
     {
-        if (File::exists($this->get_directory()))
+        if (File::exists($this->getDirectory()))
         {
             return;
         }
 
-        if (!File::makeDirectory($this->get_directory(), 0755, true, true))
+        if (!File::makeDirectory($this->getDirectory(), 0755, true, true))
         {
             $this->state = RouteArchitectGeneratorStates::DIRECTORY_CREATE_ERROR;
         }
@@ -123,16 +123,16 @@ class RouteArchitectGenerator
      *
      * @return void
      */
-    protected function file_processing(): void
+    protected function fileProcessing(): void
     {
-        if (File::exists($this->get_filename()))
+        if (File::exists($this->getFilename()))
         {
             $this->state = RouteArchitectGeneratorStates::FILE_EXIST;
 
             return;
         }
 
-        if (!File::put($this->get_filename(), $this->get_content()))
+        if (!File::put($this->getFilename(), $this->getContent()))
         {
             $this->state = RouteArchitectGeneratorStates::FILE_CREATE_ERROR;
         }
@@ -143,11 +143,11 @@ class RouteArchitectGenerator
      *
      * @return string
      */
-    protected function get_content(): string
+    protected function getContent(): string
     {
-        $stub = new RouteArchitectStub($this, $this->get_stub_path());
+        $stub = new RouteArchitectStub($this, $this->getStubPath());
 
-        return $stub->get_content();
+        return $stub->getContent();
     }
 
     /**
@@ -157,16 +157,16 @@ class RouteArchitectGenerator
      */
     public function generate(): RouteArchitectGeneratorStates
     {
-        $this->directory_processing();
+        $this->directoryProcessing();
 
-        if (!$this->is_success())
+        if (!$this->isSuccess())
         {
-            return $this->get_state();
+            return $this->getState();
         }
 
-        $this->file_processing();
+        $this->fileProcessing();
 
-        return $this->get_state();
+        return $this->getState();
     }
 
     /**
@@ -174,9 +174,9 @@ class RouteArchitectGenerator
      *
      * @return string
      */
-    public function get_filename(): string
+    public function getFilename(): string
     {
-        return $this->get_directory() . DIRECTORY_SEPARATOR . $this->get_name() . '.php';
+        return $this->getDirectory() . DIRECTORY_SEPARATOR . $this->getName() . '.php';
     }
 
     /**
@@ -184,7 +184,7 @@ class RouteArchitectGenerator
      *
      * @return string
      */
-    public function get_classname(): string
+    public function getClassname(): string
     {
         return Str::studly($this->name);
     }
@@ -196,7 +196,7 @@ class RouteArchitectGenerator
      *
      * @return array|bool|string|null
      */
-    public function get_argument($key): array | bool | string | null
+    public function getArgument($key): array | bool | string | null
     {
         return $this->command->argument($key);
     }
@@ -208,7 +208,7 @@ class RouteArchitectGenerator
      *
      * @return array|bool|string|null
      */
-    public function get_option($key): array | bool | string | null
+    public function getOption($key): array | bool | string | null
     {
         return $this->command->option($key);
     }
@@ -218,9 +218,9 @@ class RouteArchitectGenerator
      *
      * @return string
      */
-    public function get_identifier(): string
+    public function getIdentifier(): string
     {
-        $identifier = $this->get_option('identifier') ?? str_replace('RouteArchitect', '', $this->get_name());
+        $identifier = $this->getOption('identifier') ?? str_replace('RouteArchitect', '', $this->getName());
 
         return Str::slug($identifier);
     }
@@ -230,7 +230,7 @@ class RouteArchitectGenerator
      *
      * @return RouteArchitectGeneratorStates
      */
-    public function get_state(): RouteArchitectGeneratorStates
+    public function getState(): RouteArchitectGeneratorStates
     {
         return $this->state;
     }
@@ -240,11 +240,11 @@ class RouteArchitectGenerator
      *
      * @return string
      */
-    public function get_state_message(): string
+    public function getStateMessage(): string
     {
         if (str_contains($this->state->value, '%s'))
         {
-            return $this->state->format($this->get_name());
+            return $this->state->format($this->getName());
         }
 
         return $this->state->value;
@@ -255,7 +255,7 @@ class RouteArchitectGenerator
      *
      * @return bool
      */
-    public function is_success(): bool
+    public function isSuccess(): bool
     {
         return $this->state === RouteArchitectGeneratorStates::SUCCESS;
     }
@@ -265,7 +265,7 @@ class RouteArchitectGenerator
      *
      * @return string
      */
-    public function get_name(): string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -277,7 +277,7 @@ class RouteArchitectGenerator
      *
      * @return void
      */
-    public function set_name(string $name): void
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
@@ -287,7 +287,7 @@ class RouteArchitectGenerator
      *
      * @return string
      */
-    public function get_directory(): string
+    public function getDirectory(): string
     {
         $directory = $this->directory;
 
@@ -296,7 +296,7 @@ class RouteArchitectGenerator
             $directory = DIRECTORY_SEPARATOR . $directory;
         }
 
-        return app_path(RouteArchitectConfig::DIRECTORY->get_config()) . $directory;
+        return app_path(RouteArchitectConfig::DIRECTORY->getConfig()) . $directory;
     }
 
     /**
@@ -306,7 +306,7 @@ class RouteArchitectGenerator
      *
      * @return void
      */
-    public function set_directory(string $directory): void
+    public function setDirectory(string $directory): void
     {
         $directory = preg_replace('/\\\\/', '/', $directory);
 
@@ -318,7 +318,7 @@ class RouteArchitectGenerator
      *
      * @return string
      */
-    public function get_namespace(): string
+    public function getNamespace(): string
     {
         $namespace = $this->namespace;
 
@@ -327,7 +327,7 @@ class RouteArchitectGenerator
             $namespace = '\\' . $namespace;
         }
 
-        return RouteArchitectConfig::NAMESPACE->get_config() . $namespace;
+        return RouteArchitectConfig::NAMESPACE->getConfig() . $namespace;
     }
 
     /**
@@ -337,7 +337,7 @@ class RouteArchitectGenerator
      *
      * @return void
      */
-    public function set_namespace(string $namespace): void
+    public function setNamespace(string $namespace): void
     {
         $namespace = preg_replace('/\//', '\\', $namespace);
 
@@ -349,8 +349,8 @@ class RouteArchitectGenerator
      *
      * @return string
      */
-    public function get_stub_path(): string
+    public function getStubPath(): string
     {
-        return $this->stub_path;
+        return $this->stubPath;
     }
 }

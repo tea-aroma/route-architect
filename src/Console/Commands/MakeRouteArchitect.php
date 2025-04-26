@@ -35,13 +35,13 @@ class MakeRouteArchitect extends Command
 
         $generator->generate();
 
-        if (!$generator->is_success())
+        if (!$generator->isSuccess())
         {
-            $this->error($generator->get_state_message());
+            $this->error($generator->getStateMessage());
 
             return;
         }
 
-        $this->info($generator->get_state_message());
+        $this->info($generator->getStateMessage());
     }
 }

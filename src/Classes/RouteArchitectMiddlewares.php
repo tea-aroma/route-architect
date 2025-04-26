@@ -31,7 +31,7 @@ class RouteArchitectMiddlewares
      *
      * @return Collection<class-string>
      */
-    public function get_middlewares(): Collection
+    public function getMiddlewares(): Collection
     {
         return $this->middlewares;
     }
@@ -43,7 +43,7 @@ class RouteArchitectMiddlewares
      *
      * @return void
      */
-    public function set_middlewares(Collection $middlewares): void
+    public function setMiddlewares(Collection $middlewares): void
     {
         $this->middlewares = $middlewares;
     }
@@ -55,7 +55,7 @@ class RouteArchitectMiddlewares
      *
      * @return void
      */
-    public function add_middlewares(array | string $middleware): void
+    public function addMiddlewares(array | string $middleware): void
     {
         $this->middlewares->merge((array) $middleware);
     }
@@ -67,7 +67,7 @@ class RouteArchitectMiddlewares
      *
      * @return bool
      */
-    public function has_middleware(string $name): bool
+    public function hasMiddleware(string $name): bool
     {
         return $this->middlewares->contains($name);
     }
@@ -77,7 +77,7 @@ class RouteArchitectMiddlewares
      *
      * @return bool
      */
-    public function is_empty(): bool
+    public function isEmpty(): bool
     {
         return $this->middlewares->isEmpty();
     }
@@ -87,7 +87,7 @@ class RouteArchitectMiddlewares
      *
      * @return array<class-string>
      */
-    public function to_array(): array
+    public function toArray(): array
     {
         return $this->middlewares->toArray();
     }

@@ -51,13 +51,13 @@ class RouteArchitectSequences
     /**
      * Gets the value for a sequence.
      *
-     * @param RouteArchitect $route_architect
+     * @param RouteArchitect $routeArchitect
      *
      * @return string
      */
-    public function get_value(RouteArchitect $route_architect): string
+    public function getValue(RouteArchitect $routeArchitect): string
     {
-        return $route_architect->{ $this->get_method_name()->value }();
+        return $routeArchitect->{ $this->getMethodName()->value }();
     }
 
     /**
@@ -65,7 +65,7 @@ class RouteArchitectSequences
      *
      * @return RouteArchitectMethodNames
      */
-    protected function get_method_name(): RouteArchitectMethodNames
+    protected function getMethodName(): RouteArchitectMethodNames
     {
         return match ($this->type->name)
         {
@@ -79,7 +79,7 @@ class RouteArchitectSequences
      *
      * @return Collection
      */
-    public function get_sequences(): Collection
+    public function getSequences(): Collection
     {
         return $this->sequences;
     }
@@ -89,7 +89,7 @@ class RouteArchitectSequences
      *
      * @return RouteArchitectSequenceTypes
      */
-    public function get_type(): RouteArchitectSequenceTypes
+    public function getType(): RouteArchitectSequenceTypes
     {
         return $this->type;
     }
@@ -101,7 +101,7 @@ class RouteArchitectSequences
      *
      * @return void
      */
-    public function set_type(RouteArchitectSequenceTypes $type): void
+    public function setType(RouteArchitectSequenceTypes $type): void
     {
         $this->type = $type;
     }
@@ -111,7 +111,7 @@ class RouteArchitectSequences
      *
      * @return RouteArchitectConfig
      */
-    public function get_delimiter(): RouteArchitectConfig
+    public function getDelimiter(): RouteArchitectConfig
     {
         return $this->delimiter;
     }
@@ -123,7 +123,7 @@ class RouteArchitectSequences
      *
      * @return void
      */
-    public function set_delimiter(RouteArchitectConfig $delimiter): void
+    public function setDelimiter(RouteArchitectConfig $delimiter): void
     {
         $this->delimiter = $delimiter;
     }
@@ -131,13 +131,13 @@ class RouteArchitectSequences
     /**
      * Gets the sequence by the given instance.
      *
-     * @param RouteArchitect $route_architect
+     * @param RouteArchitect $routeArchitect
      *
      * @return string|null
      */
-    public function get_sequence(RouteArchitect $route_architect): string | null
+    public function getSequence(RouteArchitect $routeArchitect): string | null
     {
-        return $this->sequences->get($route_architect->get_classname());
+        return $this->sequences->get($routeArchitect->getClassname());
     }
 
     /**
@@ -147,7 +147,7 @@ class RouteArchitectSequences
      *
      * @return string|null
      */
-    public function get_sequence_by_namespace(string $namespace): string | null
+    public function getSequenceByNamespace(string $namespace): string | null
     {
         return $this->sequences->get($namespace);
     }
@@ -155,13 +155,13 @@ class RouteArchitectSequences
     /**
      * Determines whether the sequence by the given instance exists.
      *
-     * @param RouteArchitect $route_architect
+     * @param RouteArchitect $routeArchitect
      *
      * @return bool
      */
-    public function has_sequence(RouteArchitect $route_architect): bool
+    public function hasSequence(RouteArchitect $routeArchitect): bool
     {
-        return $this->sequences->has($route_architect->get_classname());
+        return $this->sequences->has($routeArchitect->getClassname());
     }
 
     /**
@@ -171,7 +171,7 @@ class RouteArchitectSequences
      *
      * @return bool
      */
-    public function has_sequence_by_namespace(string $namespace): bool
+    public function hasSequenceByNamespace(string $namespace): bool
     {
         return $this->sequences->has($namespace);
     }
@@ -179,32 +179,32 @@ class RouteArchitectSequences
     /**
      * Appends the base sequence by the given instance.
      *
-     * @param RouteArchitect $route_architect
+     * @param RouteArchitect $routeArchitect
      *
      * @return void
      */
-    private function add_base_sequence(RouteArchitect $route_architect): void
+    private function addBaseSequence(RouteArchitect $routeArchitect): void
     {
-        if ($this->has_sequence($route_architect))
+        if ($this->hasSequence($routeArchitect))
         {
             return;
         }
 
-        $this->sequences->put($route_architect->get_classname(), $this->get_value($route_architect));
+        $this->sequences->put($routeArchitect->getClassname(), $this->getValue($routeArchitect));
     }
 
     /**
      * Appends the sequence by the given instances.
      *
-     * @param RouteArchitect $route_architect
-     * @param RouteArchitect $nested_route_architect
+     * @param RouteArchitect $routeArchitect
+     * @param RouteArchitect $nestedRouteArchitect
      *
      * @return void
      */
-    public function add_sequence(RouteArchitect $route_architect, RouteArchitect $nested_route_architect): void
+    public function addSequence(RouteArchitect $routeArchitect, RouteArchitect $nestedRouteArchitect): void
     {
-        $this->add_base_sequence($route_architect);
+        $this->addBaseSequence($routeArchitect);
 
-        $this->sequences->put($nested_route_architect->get_classname(), $this->get_sequence($route_architect) . $this->delimiter->get_config() . $this->get_value($nested_route_architect));
+        $this->sequences->put($nestedRouteArchitect->getClassname(), $this->getSequence($routeArchitect) . $this->delimiter->getConfig() . $this->getValue($nestedRouteArchitect));
     }
 }
