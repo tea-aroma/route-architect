@@ -111,3 +111,37 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ### Changed
 
 - Renamed `get_namespace()` method to `get_classname()` in `RouteArchitect` and `RouteArchitectSequences` (**breaking change**).
+
+## [0.1.4] - 2025-04-23
+
+### Fixed
+
+- Corrected method call for new processing in `RouteArchitectRegistrar`.
+
+## [0.2.0] - 2025-04-26
+
+### Added
+
+- Added check in `domain_processing` method in `RouteArchitectRegistrar`.
+- New `view_name_delimiter` configuration option and new property to `RouteArchitectConfig`.
+- New `url` property with accessors in `RouteArchitect`.
+- New `normalize_with_delimiter`, `get_variables_string` and `is_associative_variables` methods in `RouteArchitect`.
+- New `namespace` and `directory` configuration options and new properties to `RouteArchitectConfig`.
+- Logic for generating `RouteArchitect` classes with console command.
+- Facade and service for `RouteArchitect`.
+- Global `route_architect()` helper for easy access to `RouteArchitect` facade.
+
+### Changed
+
+- Reordered methods in `register` method in `RouteArchitectRegistrar`.
+- Logic in `get_domain` method in `RouteArchitect`.
+- Logic in getters of `name`, `view`, `prefix` and `url` in `RouteArchitect`.
+- New commands and singleton in `RouteArchitectServiceProvider` and dependencies in `composer.json`.
+- Value for `stub_path` property in `RouteArchitectGenerator`.
+- Logic in `extract_path` method and `directory`, `namespace` and `stub_path` getters in `RouteArchitectGenerator`.
+- Message for `FILE_EXIST` property in `RouteArchitectGeneratorStates`.
+- Logic in `generate` method in `RouteArchitectGenerator`.
+
+### Removed
+
+- Unnecessary import in `RouteArchitect`.
