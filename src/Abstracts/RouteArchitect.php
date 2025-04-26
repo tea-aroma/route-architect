@@ -160,9 +160,9 @@ abstract class RouteArchitect
 
         self::$view_sequences ??= new RouteArchitectSequences(RouteArchitectSequenceTypes::VIEWS);
 
-        $this->middlewares_manager ??= new RouteArchitectMiddlewares($this->middlewares);
+        $this->middlewares_manager = new RouteArchitectMiddlewares($this->middlewares);
 
-        $this->exclude_middlewares_manager ??= new RouteArchitectMiddlewares($this->exclude_middlewares);
+        $this->exclude_middlewares_manager = new RouteArchitectMiddlewares($this->exclude_middlewares);
     }
 
     /**
