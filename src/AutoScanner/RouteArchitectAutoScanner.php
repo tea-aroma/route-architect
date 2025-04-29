@@ -4,6 +4,7 @@ namespace TeaAroma\RouteArchitect\AutoScanner;
 
 
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 use TeaAroma\RouteArchitect\Abstracts\RouteArchitect;
 use TeaAroma\RouteArchitect\Enums\RouteArchitectErrors;
 
@@ -84,7 +85,7 @@ class RouteArchitectAutoScanner
     {
         if (empty($this->getFiles()))
         {
-            throw new \LogicException(RouteArchitectErrors::NO_PHP_FILES->format($this->directory));
+            Log::error(RouteArchitectErrors::NO_PHP_FILES->format($this->directory));
         }
 
         foreach ($this->getFiles() as $file)
