@@ -9,8 +9,10 @@ use TeaAroma\RouteArchitect\Classes\RouteArchitectRegistrar;
 use TeaAroma\RouteArchitect\Classes\RouteArchitectSequences;
 use TeaAroma\RouteArchitect\Enums\RouteArchitectConfig;
 use TeaAroma\RouteArchitect\Enums\RouteArchitectErrors;
+use TeaAroma\RouteArchitect\Enums\RouteArchitectRegisterModes;
 use TeaAroma\RouteArchitect\Enums\RouteArchitectSequenceTypes;
 use TeaAroma\RouteArchitect\Enums\RouteArchitectTypes;
+use TeaAroma\RouteArchitect\Traits\RouteArchitectRegisterMode;
 
 
 /**
@@ -18,6 +20,8 @@ use TeaAroma\RouteArchitect\Enums\RouteArchitectTypes;
  */
 abstract class RouteArchitect
 {
+    use RouteArchitectRegisterMode;
+
     /**
      * The unique identifier.
      *
@@ -954,6 +958,16 @@ abstract class RouteArchitect
         self::addViewSequence($routeArchitect);
 
         return $this;
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @return RouteArchitectRegisterModes
+     */
+    public function getRegisterMode(): RouteArchitectRegisterModes
+    {
+        return $this->registerMode;
     }
 
     /**

@@ -213,6 +213,11 @@ class RouteArchitectRegistrar
              */
             $routeArchitect = new $routeArchitect();
 
+            if ($routeArchitect->isPass())
+            {
+                continue;
+            }
+
             $routeArchitect->addSequencesProcessing($this->routeArchitect);
 
             $routeArchitect->register();
