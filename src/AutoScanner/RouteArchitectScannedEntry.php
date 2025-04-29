@@ -23,13 +23,6 @@ class RouteArchitectScannedEntry
     readonly public RouteArchitect $routeArchitect;
 
     /**
-     * The register mode.
-     *
-     * @var RouteArchitectRegisterModes
-     */
-    protected RouteArchitectRegisterModes $mode = RouteArchitectRegisterModes::REGISTER;
-
-    /**
      * @param class-string<RouteArchitect> $namespace
      */
     public function __construct(string $namespace)
@@ -54,6 +47,6 @@ class RouteArchitectScannedEntry
      */
     public function getRegisterMode(): RouteArchitectRegisterModes
     {
-        return $this->routeArchitect->getAutoScanRegisterMode() ?? $this->mode;
+        return $this->routeArchitect->getAutoScanRegisterMode() ?? $this->registerMode;
     }
 }
