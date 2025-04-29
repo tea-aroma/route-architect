@@ -14,6 +14,10 @@ enum RouteArchitectErrors: string
 
     case UNDEFINED_METHOD = 'The \'%s\' method is not defined in \'%s\' class.';
 
+    case UNDEFINED_NAMESPACE = 'The namespace \'%s\' is not defined or could not be found.';
+
+    case NO_PHP_FILES = 'No PHP files found in the \'%s\' directory.';
+
     /**
      * Formats the message of error.
      *
