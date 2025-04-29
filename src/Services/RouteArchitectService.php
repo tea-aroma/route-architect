@@ -4,6 +4,8 @@ namespace TeaAroma\RouteArchitect\Services;
 
 
 use TeaAroma\RouteArchitect\Abstracts\RouteArchitect;
+use TeaAroma\RouteArchitect\AutoScanner\RouteArchitectAutoScanner;
+use TeaAroma\RouteArchitect\Enums\RouteArchitectConfig;
 
 
 /**
@@ -45,5 +47,24 @@ class RouteArchitectService
     public function register(string $namespace): void
     {
         (new $namespace())->register();
+    }
+
+    /**
+     * Automatically scans and registers all 'RouteArchitect' classes by the given force.
+     *
+     * @param bool $force
+     *
+     * @return void
+     */
+    public function autoScan(bool $force = true): void
+    {
+        if (!$force)
+        {
+            return;
+        }
+
+        $autoScan = new RouteArchitectAutoScanner(app_path(RouteArchitectConfig::DIRECTORY->getConfig()));
+
+        $autoScan->initialization();
     }
 }

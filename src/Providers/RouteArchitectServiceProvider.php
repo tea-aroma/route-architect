@@ -5,6 +5,7 @@ namespace TeaAroma\RouteArchitect\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use TeaAroma\RouteArchitect\Console\Commands\MakeRouteArchitect;
+use TeaAroma\RouteArchitect\Enums\RouteArchitectConfig;
 use TeaAroma\RouteArchitect\Services\RouteArchitectService;
 
 
@@ -20,6 +21,8 @@ class RouteArchitectServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        route_architect()->autoScan(RouteArchitectConfig::AUTO_SCAN->getConfig());
+
         $this->publishes([ __DIR__ . '/../Config/route-architect.php' => config_path('route-architect.php') ], 'config');
     }
 

@@ -142,6 +142,13 @@ abstract class RouteArchitect
     protected array $variables = [];
 
     /**
+     * The register mode of the 'AutoScan' process.
+     *
+     * @var RouteArchitectRegisterModes|null
+     */
+    protected ?RouteArchitectRegisterModes $autoScanRegisterMode = null;
+
+    /**
      * The sequences of names.
      *
      * @var RouteArchitectSequences
@@ -844,6 +851,28 @@ abstract class RouteArchitect
     public function hasVariables(): bool
     {
         return !empty($this->variables);
+    }
+
+    /**
+     * Gets the register mode of the 'AutoScan' process.
+     *
+     * @return RouteArchitectRegisterModes|null
+     */
+    public function getAutoScanRegisterMode(): ?RouteArchitectRegisterModes
+    {
+        return $this->autoScanRegisterMode;
+    }
+
+    /**
+     * Sets the given register mode of the 'AutoScan' process.
+     *
+     * @param RouteArchitectRegisterModes $autoScanRegisterMode
+     *
+     * @return void
+     */
+    public function setAutoScanRegisterMode(RouteArchitectRegisterModes $autoScanRegisterMode): void
+    {
+        $this->autoScanRegisterMode = $autoScanRegisterMode;
     }
 
     /**
