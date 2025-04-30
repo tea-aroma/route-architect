@@ -145,3 +145,24 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ### Removed
 
 - Unnecessary import in `RouteArchitect`.
+
+## [0.3.0] - 2025-04-30
+
+### Added
+
+- Migrated project codebase from `snake_case` to `camelCase`.
+- New `RouteArchitectRegister` trait to manage registration logic.
+- New `RouteArchitectRegisterModes` enum to encapsulate registration modes.
+- Added `RouteArchitectRegisterMode` into `RouteArchitect`.
+- New `UNDEFINED_NAMESPACE` and `NO_PHP_FILES` properties in `RouteArchitectErrors`.
+- Logic for automatically scanning and registering `RouteArchitect` classes.
+
+### Changed
+
+- Replaced lazy initialization with direct assignment in `RouteArchitect`.
+- Replaced exception with logging for `NO_PHP_FILES` case in the `scan` method in `RouteArchitectAutoScanner`.
+
+### Removed
+
+- Removed unused `variables_to_string`, `get_callable` and `get_closure` methods in `RouteArchitectHelpers`.
+- Removed `mode` property and change logic in `getRegistrationMode()` method in `RouteArchitectScannedEntry`.
