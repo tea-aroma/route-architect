@@ -100,4 +100,17 @@ return [
     */
 
     'action_delimiter' => env('ROUTE_ARCHITECT_ACTION_DELIMITER', '@'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Sequence Group Name Mode
+    |--------------------------------------------------------------------------
+    |
+    | Defines how the group name should be handled for each sequence.
+    |
+    | Available values: 'only-base', 'every-group'.
+    |
+    */
+
+    'sequences_group_name_mode' => env('ROUTE_ARCHITECT_SEQUENCES_GROUP_NAME_MODE', 'only-base'),
 ];

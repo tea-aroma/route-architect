@@ -74,7 +74,7 @@ class RouteArchitectRegistrar
     {
         $name = $this->routeArchitect->getName();
 
-        if ($this->routeArchitect->hasNameSequence())
+        if (!$this->routeArchitect->getContext()->isFirstTrace($this->routeArchitect))
         {
             $name = RouteArchitectConfig::ROUTE_NAME_DELIMITER->getConfig() . $name;
         }
@@ -209,18 +209,16 @@ class RouteArchitectRegistrar
         foreach ($this->routeArchitect->getRouteArchitects() as $routeArchitect)
         {
             /**
-             * @var RouteArchitect $routeArchitect
+             * @var RouteArchitect $instance
              */
-            $routeArchitect = new $routeArchitect();
+            $instance = new $routeArchitect($this->routeArchitect);
 
-            if ($routeArchitect->isPass())
+            if ($instance->isPass())
             {
                 continue;
             }
 
-            $routeArchitect->addSequencesProcessing($this->routeArchitect);
-
-            $routeArchitect->register();
+            $instance->register();
         }
     }
 

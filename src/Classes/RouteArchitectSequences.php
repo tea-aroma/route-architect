@@ -5,79 +5,32 @@ namespace TeaAroma\RouteArchitect\Classes;
 
 use Illuminate\Support\Collection;
 use TeaAroma\RouteArchitect\Abstracts\RouteArchitect;
-use TeaAroma\RouteArchitect\Enums\RouteArchitectConfig;
-use TeaAroma\RouteArchitect\Enums\RouteArchitectMethodNames;
-use TeaAroma\RouteArchitect\Enums\RouteArchitectSequenceTypes;
 
 
 /**
- * Implements logical sequences using namespaces of the 'RouteArchitect' class.
+ * Implements logical sequences of the 'RouteArchitect' classes.
  */
 class RouteArchitectSequences
 {
     /**
      * The sequences.
      *
-     * @var Collection<class-string<RouteArchitect>, string>
+     * @var Collection<string, RouteArchitectSequenceEntry>
      */
     protected Collection $sequences;
 
     /**
-     * The type.
-     *
-     * @var RouteArchitectSequenceTypes
+     * The constructor.
      */
-    protected RouteArchitectSequenceTypes $type;
-
-    /**
-     * Todo: Needs refactoring.
-     *
-     * The delimiter.
-     *
-     * @var RouteArchitectConfig
-     */
-    protected RouteArchitectConfig $delimiter = RouteArchitectConfig::ROUTE_NAME_DELIMITER;
-
-    /**
-     * @param RouteArchitectSequenceTypes $type
-     */
-    public function __construct(RouteArchitectSequenceTypes $type)
+    public function __construct()
     {
         $this->sequences = new Collection();
-
-        $this->type = $type;
-    }
-
-    /**
-     * Gets the value for a sequence.
-     *
-     * @param RouteArchitect $routeArchitect
-     *
-     * @return string
-     */
-    public function getValue(RouteArchitect $routeArchitect): string
-    {
-        return $routeArchitect->{ $this->getMethodName()->value }();
-    }
-
-    /**
-     * Gets the name of the method by the type.
-     *
-     * @return RouteArchitectMethodNames
-     */
-    protected function getMethodName(): RouteArchitectMethodNames
-    {
-        return match ($this->type->name)
-        {
-            RouteArchitectSequenceTypes::NAMES->name => RouteArchitectMethodNames::GET_NAME,
-            RouteArchitectSequenceTypes::VIEWS->name => RouteArchitectMethodNames::GET_VIEW,
-        };
     }
 
     /**
      * Gets the sequences.
      *
-     * @return Collection
+     * @return Collection<string, RouteArchitectSequenceEntry>
      */
     public function getSequences(): Collection
     {
@@ -85,75 +38,19 @@ class RouteArchitectSequences
     }
 
     /**
-     * Gets the type.
-     *
-     * @return RouteArchitectSequenceTypes
-     */
-    public function getType(): RouteArchitectSequenceTypes
-    {
-        return $this->type;
-    }
-
-    /**
-     * Sets the given type.
-     *
-     * @param RouteArchitectSequenceTypes $type
-     *
-     * @return void
-     */
-    public function setType(RouteArchitectSequenceTypes $type): void
-    {
-        $this->type = $type;
-    }
-
-    /**
-     * Gets the delimiter.
-     *
-     * @return RouteArchitectConfig
-     */
-    public function getDelimiter(): RouteArchitectConfig
-    {
-        return $this->delimiter;
-    }
-
-    /**
-     * Sets the given delimiter.
-     *
-     * @param RouteArchitectConfig $delimiter
-     *
-     * @return void
-     */
-    public function setDelimiter(RouteArchitectConfig $delimiter): void
-    {
-        $this->delimiter = $delimiter;
-    }
-
-    /**
-     * Gets the sequence by the given instance.
+     * Gets the sequence entry by the given instance.
      *
      * @param RouteArchitect $routeArchitect
      *
-     * @return string|null
+     * @return RouteArchitectSequenceEntry|null
      */
-    public function getSequence(RouteArchitect $routeArchitect): string | null
+    public function getSequence(RouteArchitect $routeArchitect): ?RouteArchitectSequenceEntry
     {
-        return $this->sequences->get($routeArchitect->getClassname());
+        return $this->sequences->get($routeArchitect->getContext()->getName());
     }
 
     /**
-     * Gets the sequence by the given namespace.
-     *
-     * @param string $namespace
-     *
-     * @return string|null
-     */
-    public function getSequenceByNamespace(string $namespace): string | null
-    {
-        return $this->sequences->get($namespace);
-    }
-
-    /**
-     * Determines whether the sequence by the given instance exists.
+     * Determines whether the sequence of the given instance is exits.
      *
      * @param RouteArchitect $routeArchitect
      *
@@ -161,50 +58,25 @@ class RouteArchitectSequences
      */
     public function hasSequence(RouteArchitect $routeArchitect): bool
     {
-        return $this->sequences->has($routeArchitect->getClassname());
+        return $this->sequences->has($routeArchitect->getContext()->getName());
     }
 
     /**
-     * Determines whether the sequence by the given namespace exists.
-     *
-     * @param class-string<RouteArchitect> $namespace
-     *
-     * @return bool
-     */
-    public function hasSequenceByNamespace(string $namespace): bool
-    {
-        return $this->sequences->has($namespace);
-    }
-
-    /**
-     * Appends the base sequence by the given instance.
+     * Adds the sequence entry by the given 'RouteArchitect' instance.
      *
      * @param RouteArchitect $routeArchitect
      *
      * @return void
      */
-    private function addBaseSequence(RouteArchitect $routeArchitect): void
+    public function addSequence(RouteArchitect $routeArchitect): void
     {
         if ($this->hasSequence($routeArchitect))
         {
             return;
         }
 
-        $this->sequences->put($routeArchitect->getClassname(), $this->getValue($routeArchitect));
-    }
+        $entry = new RouteArchitectSequenceEntry($routeArchitect);
 
-    /**
-     * Appends the sequence by the given instances.
-     *
-     * @param RouteArchitect $routeArchitect
-     * @param RouteArchitect $nestedRouteArchitect
-     *
-     * @return void
-     */
-    public function addSequence(RouteArchitect $routeArchitect, RouteArchitect $nestedRouteArchitect): void
-    {
-        $this->addBaseSequence($routeArchitect);
-
-        $this->sequences->put($nestedRouteArchitect->getClassname(), $this->getSequence($routeArchitect) . $this->delimiter->getConfig() . $this->getValue($nestedRouteArchitect));
+        $this->sequences->put($routeArchitect->getContext()->getName(), $entry);
     }
 }

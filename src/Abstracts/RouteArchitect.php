@@ -4,13 +4,15 @@ namespace TeaAroma\RouteArchitect\Abstracts;
 
 
 use Illuminate\Support\Collection;
+use TeaAroma\RouteArchitect\Classes\RouteArchitectContext;
 use TeaAroma\RouteArchitect\Classes\RouteArchitectMiddlewares;
 use TeaAroma\RouteArchitect\Classes\RouteArchitectRegistrar;
+use TeaAroma\RouteArchitect\Classes\RouteArchitectSequenceEntry;
 use TeaAroma\RouteArchitect\Classes\RouteArchitectSequences;
 use TeaAroma\RouteArchitect\Enums\RouteArchitectConfig;
 use TeaAroma\RouteArchitect\Enums\RouteArchitectErrors;
 use TeaAroma\RouteArchitect\Enums\RouteArchitectRegisterModes;
-use TeaAroma\RouteArchitect\Enums\RouteArchitectSequenceTypes;
+use TeaAroma\RouteArchitect\Enums\RouteArchitectSequencesGroupNameModes;
 use TeaAroma\RouteArchitect\Enums\RouteArchitectTypes;
 use TeaAroma\RouteArchitect\Traits\RouteArchitectRegisterMode;
 
@@ -149,31 +151,45 @@ abstract class RouteArchitect
     protected ?RouteArchitectRegisterModes $autoScanRegisterMode = null;
 
     /**
-     * The sequences of names.
+     * The sequences.
      *
      * @var RouteArchitectSequences
      */
-    static protected RouteArchitectSequences $nameSequences;
+    static protected RouteArchitectSequences $sequences;
 
     /**
-     * The sequences of views.
+     * The group name of the sequences.
      *
-     * @var RouteArchitectSequences
+     * @var class-string<RouteArchitect>|null
      */
-    static protected RouteArchitectSequences $viewSequences;
+    protected ?string $sequencesGroupName = null;
 
     /**
-     * The constructor.
+     * The called instance.
+     *
+     * @var RouteArchitect|null
      */
-    public function __construct()
+    readonly protected ?RouteArchitect $calledRouteArchitect;
+
+    /**
+     * The context of the calls.
+     *
+     * @var RouteArchitectContext
+     */
+    readonly protected RouteArchitectContext $context;
+
+    /**
+     * @param RouteArchitect|null $calledRouteArchitect
+     */
+    public function __construct(?self $calledRouteArchitect = null)
     {
-        self::$nameSequences ??= new RouteArchitectSequences(RouteArchitectSequenceTypes::NAMES);
-
-        self::$viewSequences ??= new RouteArchitectSequences(RouteArchitectSequenceTypes::VIEWS);
-
         $this->middlewaresManager = new RouteArchitectMiddlewares($this->middlewares);
 
         $this->excludeMiddlewaresManager = new RouteArchitectMiddlewares($this->excludeMiddlewares);
+
+        self::$sequences ??= new RouteArchitectSequences();
+
+        $this->calledRouteArchitect = $calledRouteArchitect;
     }
 
     /**
@@ -183,6 +199,12 @@ abstract class RouteArchitect
      */
     public function register(): void
     {
+        $this->context = $this->contextProcessing($this->calledRouteArchitect);
+
+        $this->sequencesGroupNameProcessing($this->calledRouteArchitect);
+
+        $this->sequencesProcessing();
+
         $registrar = new RouteArchitectRegistrar($this);
 
         $registrar->register();
@@ -221,6 +243,16 @@ abstract class RouteArchitect
         $segments = preg_split('/[^a-z0-9]+/i', $input, flags: PREG_SPLIT_NO_EMPTY);
 
         return strtolower(implode($delimiter, $segments));
+    }
+
+    /**
+     * Handles the process of the sequences.
+     *
+     * @return void
+     */
+    protected function sequencesProcessing(): void
+    {
+        self::$sequences->addSequence($this);
     }
 
     /**
@@ -886,107 +918,101 @@ abstract class RouteArchitect
     }
 
     /**
-     * Gets sequences of names.
+     * Gets the sequences.
      *
      * @return RouteArchitectSequences
      */
-    public function getNameSequences(): RouteArchitectSequences
+    public function getSequences(): RouteArchitectSequences
     {
-        return self::$nameSequences;
+        return self::$sequences;
     }
 
     /**
-     * Gets the sequence of the name.
+     * Gets the sequence entry.
      *
-     * @return string|null
+     * @return RouteArchitectSequenceEntry|null
      */
-    public function getNameSequence(): string | null
+    public function getSequence(): ?RouteArchitectSequenceEntry
     {
-        return self::$nameSequences->getSequence($this);
+        return self::$sequences->getSequence($this);
     }
 
     /**
-     * Appends the sequence of the name.
-     *
-     * @param RouteArchitect $routeArchitect
-     *
-     * @return static
-     */
-    public function addNameSequence(RouteArchitect $routeArchitect): static
-    {
-        self::$nameSequences->addSequence($routeArchitect, $this);
-
-        return $this;
-    }
-
-    /**
-     * Determines whether the sequence of the name exists.
+     * Determines whether the entry of this instance exists.
      *
      * @return bool
      */
-    public function hasNameSequence(): bool
+    public function hasSequence(): bool
     {
-        return self::$nameSequences->hasSequence($this);
+        return self::$sequences->hasSequence($this);
     }
 
     /**
-     * Gets sequences of views.
+     * Gets the group name of the sequences.
      *
-     * @return RouteArchitectSequences
+     * @return class-string<RouteArchitect>|null
      */
-    public function getViewSequences(): RouteArchitectSequences
+    public function getSequencesGroupName(): ?string
     {
-        return self::$viewSequences;
+        return $this->sequencesGroupName;
     }
 
     /**
-     * Gets the sequence of the view.
+     * Sets the given group name of the sequences.
      *
-     * @return string|null
-     */
-    public function getViewSequence(): string | null
-    {
-        return self::$viewSequences->getSequence($this);
-    }
-
-    /**
-     * Appends one or more sequence of the view.
-     *
-     * @param RouteArchitect $routeArchitect
+     * @param class-string<RouteArchitect> $sequencesGroupName
      *
      * @return static
      */
-    public function addViewSequence(RouteArchitect $routeArchitect): static
+    public function setSequencesGroupName(string $sequencesGroupName): static
     {
-        self::$viewSequences->addSequence($routeArchitect, $this);
+        $this->sequencesGroupName = $sequencesGroupName;
 
         return $this;
     }
 
     /**
-     * Determines whether the sequence of the view exists.
+     * Handles the process of the group name of the sequences.
      *
-     * @return bool
+     * @param RouteArchitect|null $routeArchitect
+     *
+     * @return $this
      */
-    public function hasViewSequence(): bool
+    protected function sequencesGroupNameProcessing(?RouteArchitect $routeArchitect): static
     {
-        return self::$viewSequences->hasSequence($this);
+        $isEveryGroup = RouteArchitectConfig::SEQUENCES_GROUP_NAME_MODE->getConfig() === RouteArchitectSequencesGroupNameModes::EVERY_GROUP->value;
+
+        $this->sequencesGroupName ??= $isEveryGroup && $this->isGroup() ? $this::getClassname() : $routeArchitect->sequencesGroupName ?? $routeArchitect->getClassname();
+
+        return $this;
     }
 
     /**
-     * Implements the process of appending sequences by the given instance.
+     * Gets the context of the calls.
      *
-     * @param RouteArchitect $routeArchitect
+     * @param bool $isClone
      *
-     * @return static
+     * @return RouteArchitectContext
      */
-    public function addSequencesProcessing(RouteArchitect $routeArchitect): static
+    public function getContext(bool $isClone = false): RouteArchitectContext
     {
-        self::addNameSequence($routeArchitect);
+        return $isClone ? ( clone $this->context ) : $this->context;
+    }
 
-        self::addViewSequence($routeArchitect);
+    /**
+     * Handles the process of the context of the calls.
+     *
+     * @param RouteArchitect|null $routeArchitect
+     *
+     * @return RouteArchitectContext
+     */
+    protected function contextProcessing(?self $routeArchitect): RouteArchitectContext
+    {
+        $context = $routeArchitect->getContext(true) ?? new RouteArchitectContext();
 
-        return $this;
+        $context->addTrace($this);
+
+        return $context;
     }
 
     /**

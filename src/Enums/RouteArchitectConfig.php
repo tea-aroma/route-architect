@@ -26,6 +26,8 @@ enum RouteArchitectConfig: string
 
     case ACTION_DELIMITER = 'action_delimiter';
 
+    case SEQUENCES_GROUP_NAME_MODE = 'sequences_group_name_mode';
+
     /**
      * Gets the value from configurations.
      *
