@@ -19,7 +19,7 @@ class RouteArchitectStub
     protected RouteArchitectGenerator $generator;
 
     /**
-     * The path of stub.
+     * The stub path.
      *
      * @var string
      */
@@ -37,7 +37,7 @@ class RouteArchitectStub
     }
 
     /**
-     * Gets the content of stub.
+     * Gets the content of stub file.
      *
      * @return string
      */
@@ -71,7 +71,7 @@ class RouteArchitectStub
     }
 
     /**
-     * Gets the path.
+     * Gets the stub path.
      *
      * @return string
      */

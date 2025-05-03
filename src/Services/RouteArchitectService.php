@@ -14,7 +14,7 @@ use TeaAroma\RouteArchitect\Enums\RouteArchitectConfig;
 class RouteArchitectService
 {
     /**
-     * Gets the name of route by the given namespace.
+     * Gets the route name by the given namespace.
      *
      * @param class-string<RouteArchitect> $namespace
      *
@@ -26,7 +26,7 @@ class RouteArchitectService
     }
 
     /**
-     * Gets the name of view by the given namespace.
+     * Gets the view name by the given namespace.
      *
      * @param class-string<RouteArchitect> $namespace
      *

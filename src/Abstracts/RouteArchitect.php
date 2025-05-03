@@ -32,14 +32,14 @@ abstract class RouteArchitect
     protected string $identifier;
 
     /**
-     * The name of route.
+     * The route name.
      *
      * @var string|null
      */
     protected ?string $name = null;
 
     /**
-     * The name of view.
+     * The view name.
      *
      * @var string|null
      */
@@ -53,14 +53,14 @@ abstract class RouteArchitect
     protected ?string $prefix = null;
 
     /**
-     * The url.
+     * The URL.
      *
      * @var string|null
      */
     protected ?string $url = null;
 
     /**
-     * The type of method.
+     * The method type.
      *
      * @var RouteArchitectTypes
      */
@@ -74,7 +74,7 @@ abstract class RouteArchitect
     protected array | string | null $action = null;
 
     /**
-     * The class name of controller.
+     * The controller name.
      *
      * @var class-string|null
      */
@@ -102,14 +102,14 @@ abstract class RouteArchitect
     protected ?string $customUrl = null;
 
     /**
-     * The middleware(s).
+     * The middlewares.
      *
      * @var class-string[]
      */
     protected array $middlewares = [];
 
     /**
-     * The manager of the middleware(s).
+     * The middlewares manager.
      *
      * @var RouteArchitectMiddlewares
      */
@@ -123,21 +123,21 @@ abstract class RouteArchitect
     protected array $excludeMiddlewares = [];
 
     /**
-     * The manager of the middlewares to exclude.
+     * The middlewares to exclude manager.
      *
      * @var RouteArchitectMiddlewares
      */
     private RouteArchitectMiddlewares $excludeMiddlewaresManager;
 
     /**
-     * The 'RouteArchitect' classes.
+     * The nested 'RouteArchitect' classes.
      *
      * @var class-string<RouteArchitect>[]
      */
     protected array $routeArchitects = [];
 
     /**
-     * The variables.
+     * The URL variables.
      *
      * @var string[]
      */
@@ -165,14 +165,14 @@ abstract class RouteArchitect
     protected ?string $sequencesGroupName = null;
 
     /**
-     * The called instance.
+     * The previously called instance.
      *
      * @var RouteArchitect|null
      */
     readonly protected ?RouteArchitect $calledRouteArchitect;
 
     /**
-     * The context of the calls.
+     * The execution context.
      *
      * @var RouteArchitectContext
      */
@@ -300,7 +300,7 @@ abstract class RouteArchitect
     }
 
     /**
-     * Sets the given name of route.
+     * Sets the given route name.
      *
      * @param string $name
      *
@@ -314,7 +314,7 @@ abstract class RouteArchitect
     }
 
     /**
-     * Determines whether the name of route exists.
+     * Determines whether the route name exists.
      *
      * @return bool
      */
@@ -334,7 +334,7 @@ abstract class RouteArchitect
     }
 
     /**
-     * Sets the given name of view.
+     * Sets the given view name.
      *
      * @param string $view
      *
@@ -348,7 +348,7 @@ abstract class RouteArchitect
     }
 
     /**
-     * Determines whether the name of view exists.
+     * Determines whether the view name exists.
      *
      * @return bool
      */
@@ -433,7 +433,7 @@ abstract class RouteArchitect
     }
 
     /**
-     * Gets the type of method.
+     * Gets the method type.
      *
      * @return RouteArchitectTypes
      */
@@ -443,7 +443,7 @@ abstract class RouteArchitect
     }
 
     /**
-     * Sets the given type of method.
+     * Sets the given method type.
      *
      * @param RouteArchitectTypes $type
      *
@@ -457,7 +457,7 @@ abstract class RouteArchitect
     }
 
     /**
-     * Determines whether the type exists.
+     * Determines whether the method type exists.
      *
      * @return bool
      */
@@ -511,7 +511,7 @@ abstract class RouteArchitect
     }
 
     /**
-     * Gets the class name of constructor.
+     * Gets the controller name.
      *
      * @return string|null
      */
@@ -521,7 +521,7 @@ abstract class RouteArchitect
     }
 
     /**
-     * Sets the given class name of constructor.
+     * Sets the given controller name.
      *
      * @param string $controller
      *
@@ -768,7 +768,7 @@ abstract class RouteArchitect
     }
 
     /**
-     * Gets the 'RouteArchitects' classes.
+     * Gets the nested 'RouteArchitects' classes.
      *
      * @return string-class<RouteArchitect>[]
      */
@@ -778,7 +778,7 @@ abstract class RouteArchitect
     }
 
     /**
-     * Sets the given 'RouteArchitects' classes.
+     * Sets the given nested 'RouteArchitects' classes.
      *
      * @param class-string<RouteArchitect>[] $routeArchitects
      *
@@ -792,7 +792,7 @@ abstract class RouteArchitect
     }
 
     /**
-     * Appends one or more 'RouteArchitect' class to the existing list.
+     * Appends one or more nested 'RouteArchitect' class to the existing list.
      *
      * @param class-string<RouteArchitect>[]|class-string<RouteArchitect> $routeArchitects
      *
@@ -826,7 +826,7 @@ abstract class RouteArchitect
     }
 
     /**
-     * Converts route variables into a string.
+     * Converts the variables into a string.
      *
      * @return string
      */
@@ -988,7 +988,7 @@ abstract class RouteArchitect
     }
 
     /**
-     * Gets the context of the calls.
+     * Gets the execution context.
      *
      * @param bool $isClone
      *
@@ -1000,7 +1000,7 @@ abstract class RouteArchitect
     }
 
     /**
-     * Handles the process of the context of the calls.
+     * Handles the process of the execution context.
      *
      * @param RouteArchitect|null $routeArchitect
      *

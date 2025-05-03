@@ -9,33 +9,33 @@ use TeaAroma\RouteArchitect\Enums\RouteArchitectConfig;
 
 
 /**
- * Accumulates values from trace of registering 'RouteArchitect' classes.
+ * Stores the trace of 'RouteArchitect' class registrations.
  */
 class RouteArchitectContext
 {
     /**
-     * The name of route, composed of trace of the calls.
+     * The route name, composed of the execution trace.
      *
      * @var string
      */
     protected string $name = '';
 
     /**
-     * The name of view, composed of trace of the calls.
+     * The view name, composed of the execution trace.
      *
      * @var string
      */
     protected string $view = '';
 
     /**
-     * The prefix, composed of trace of the calls.
+     * The prefix, composed of the execution trace.
      *
      * @var string
      */
     protected string $prefix = '';
 
     /**
-     * The trace of the calls.
+     * The execution trace.
      *
      * @var Collection<RouteArchitect>
      */
@@ -50,7 +50,7 @@ class RouteArchitectContext
     }
 
     /**
-     * Gets the last instance of the trace of the calls.
+     * Gets the last instance of execution trace.
      *
      * @return RouteArchitect|null
      */
@@ -60,7 +60,7 @@ class RouteArchitectContext
     }
 
     /**
-     * Gets the penultimate instance of the trace of the calls.
+     * Gets the penultimate instance of the execution trace.
      *
      * @return RouteArchitect|null
      */
@@ -70,7 +70,7 @@ class RouteArchitectContext
     }
 
     /**
-     * Determines whether the given instance is the first trace of the calls.
+     * Determines whether the given instance is the first execution trace.
      *
      * @param RouteArchitect $routeArchitect
      *
@@ -82,7 +82,7 @@ class RouteArchitectContext
     }
 
     /**
-     * Gets the full name of the route.
+     * Gets the full route name.
      *
      * @return string
      */
@@ -92,7 +92,7 @@ class RouteArchitectContext
     }
 
     /**
-     * Adds the given name of route.
+     * Adds the given route name.
      *
      * @param string $name
      *
@@ -106,7 +106,7 @@ class RouteArchitectContext
     }
 
     /**
-     * Gets the full name of the view.
+     * Gets the full view name.
      *
      * @return string
      */
@@ -116,7 +116,7 @@ class RouteArchitectContext
     }
 
     /**
-     * Adds the given name of view.
+     * Adds the given view name.
      *
      * @param string $view
      *
@@ -154,7 +154,7 @@ class RouteArchitectContext
     }
 
     /**
-     * Gets the trace of the calls.
+     * Gets the execution trace.
      *
      * @return Collection
      */
@@ -164,7 +164,7 @@ class RouteArchitectContext
     }
 
     /**
-     * Adds the given instance to the trace of the calls.
+     * Adds the given instance to the execution trace.
      *
      * @param RouteArchitect $routeArchitect
      *

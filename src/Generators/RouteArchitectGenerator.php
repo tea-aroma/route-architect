@@ -51,7 +51,7 @@ class RouteArchitectGenerator
     protected string $namespace;
 
     /**
-     * The path of stub.
+     * The stub path.
      *
      * @var string
      */
@@ -345,7 +345,7 @@ class RouteArchitectGenerator
     }
 
     /**
-     * Gets the path of stub.
+     * Gets the stub path.
      *
      * @return string
      */

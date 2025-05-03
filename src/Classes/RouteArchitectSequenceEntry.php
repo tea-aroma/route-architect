@@ -34,21 +34,21 @@ readonly class RouteArchitectSequenceEntry
     public RouteArchitect $routeArchitect;
 
     /**
-     * The called instance of 'RouteArchitect' class.
+     * The previously called instance of 'RouteArchitect' class.
      *
      * @var RouteArchitect|null
      */
     public ?RouteArchitect $calledRouteArchitect;
 
     /**
-     * The name of route.
+     * The route name.
      *
      * @var string
      */
     public string $name;
 
     /**
-     * The path to view.
+     * The view name.
      *
      * @var string
      */
@@ -62,7 +62,7 @@ readonly class RouteArchitectSequenceEntry
     public string $prefix;
 
     /**
-     * The trace of the calls.
+     * The execution trace.
      *
      * @var Collection<RouteArchitect>
      */
