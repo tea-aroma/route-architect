@@ -5,6 +5,7 @@ namespace TeaAroma\RouteArchitect\Classes;
 
 use Illuminate\Support\Collection;
 use TeaAroma\RouteArchitect\Abstracts\RouteArchitect;
+use TeaAroma\RouteArchitect\Callables\FindSequenceEntryCallable;
 
 
 /**
@@ -38,27 +39,41 @@ class RouteArchitectSequences
     }
 
     /**
-     * Gets the sequence entry by the given instance.
+     * Gets the sequence entry by the given sequence names.
      *
-     * @param RouteArchitect $routeArchitect
+     * @param class-string<RouteArchitect> $sequenceName
+     * @param class-string<RouteArchitect>|null $sequenceGroupName
      *
      * @return RouteArchitectSequenceEntry|null
      */
-    public function getSequence(RouteArchitect $routeArchitect): ?RouteArchitectSequenceEntry
+    public function getSequence(string $sequenceName, ?string $sequenceGroupName = null): ?RouteArchitectSequenceEntry
     {
-        return $this->sequences->get($routeArchitect->getContext()->getName());
+        return $this->sequences->first(new FindSequenceEntryCallable($sequenceName, $sequenceGroupName));
     }
 
     /**
-     * Determines whether the sequence of the given instance is exits.
+     * Determines whether the sequence entry exists by the given sequence names.
      *
-     * @param RouteArchitect $routeArchitect
+     * @param class-string<RouteArchitect>      $sequenceName
+     * @param class-string<RouteArchitect>|null $sequenceGroupName
      *
      * @return bool
      */
-    public function hasSequence(RouteArchitect $routeArchitect): bool
+    public function hasSequence(string $sequenceName, ?string $sequenceGroupName = null): bool
     {
-        return $this->sequences->has($routeArchitect->getContext()->getName());
+        return $this->sequences->some(new FindSequenceEntryCallable($sequenceName, $sequenceGroupName));
+    }
+
+    /**
+     * Determines whether the sequence entry by the given route name exists.
+     *
+     * @param string $name
+     *
+     * @return bool
+     */
+    public function hasSequenceByRouteName(string $name): bool
+    {
+        return $this->sequences->has($name);
     }
 
     /**
@@ -70,7 +85,7 @@ class RouteArchitectSequences
      */
     public function addSequence(RouteArchitect $routeArchitect): void
     {
-        if ($this->hasSequence($routeArchitect))
+        if ($this->hasSequenceByRouteName($routeArchitect->getContext()->getName()))
         {
             return;
         }

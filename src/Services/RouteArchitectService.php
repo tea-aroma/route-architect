@@ -5,6 +5,8 @@ namespace TeaAroma\RouteArchitect\Services;
 
 use TeaAroma\RouteArchitect\Abstracts\RouteArchitect;
 use TeaAroma\RouteArchitect\AutoScanner\RouteArchitectAutoScanner;
+use TeaAroma\RouteArchitect\Classes\RouteArchitectSequenceEntry;
+use TeaAroma\RouteArchitect\Classes\RouteArchitectSequences;
 use TeaAroma\RouteArchitect\Enums\RouteArchitectConfig;
 
 
@@ -14,27 +16,26 @@ use TeaAroma\RouteArchitect\Enums\RouteArchitectConfig;
 class RouteArchitectService
 {
     /**
-     * Gets the route name by the given namespace.
+     * Gets the sequence entries.
      *
-     * @param class-string<RouteArchitect> $namespace
-     *
-     * @return string
+     * @return RouteArchitectSequences
      */
-    public function getRouteName(string $namespace): string
+    public function getSequences(): RouteArchitectSequences
     {
-        return (new $namespace())->getNameSequence();
+        return RouteArchitect::getSequences();
     }
 
     /**
-     * Gets the view name by the given namespace.
+     * Gets the sequence entry by the given sequence names.
      *
-     * @param class-string<RouteArchitect> $namespace
+     * @param class-string<RouteArchitect>      $sequenceName
+     * @param class-string<RouteArchitect>|null $sequenceGroupName
      *
-     * @return string
+     * @return RouteArchitectSequenceEntry|null
      */
-    public function getViewName(string $namespace): string
+    public function getSequenceEntry(string $sequenceName, ?string $sequenceGroupName = null): ?RouteArchitectSequenceEntry
     {
-        return (new $namespace())->getViewSequence();
+        return RouteArchitect::getSequences()->getSequence($sequenceName, $sequenceGroupName);
     }
 
     /**

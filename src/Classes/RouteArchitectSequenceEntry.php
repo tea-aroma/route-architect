@@ -17,14 +17,14 @@ readonly class RouteArchitectSequenceEntry
      *
      * @var string
      */
-    public string $sequence_name;
+    public string $sequenceName;
 
     /**
      * The group name of the current sequence.
      *
      * @var string
      */
-    public string $sequence_group_name;
+    public string $sequencesGroupName;
 
     /**
      * The instance of 'RouteArchitect' class.
@@ -79,9 +79,9 @@ readonly class RouteArchitectSequenceEntry
 
         $this->calledRouteArchitect = $context->getPenultimateTrace();
 
-        $this->sequence_name = $routeArchitect->getClassname();
+        $this->sequenceName = $routeArchitect->getClassname();
 
-        $this->sequence_group_name = $routeArchitect->getSequencesGroupName();
+        $this->sequencesGroupName = $routeArchitect->getSequencesGroupName();
 
         $this->name = $context->getName();
 

@@ -922,7 +922,7 @@ abstract class RouteArchitect
      *
      * @return RouteArchitectSequences
      */
-    public function getSequences(): RouteArchitectSequences
+    static public function getSequences(): RouteArchitectSequences
     {
         return self::$sequences;
     }
@@ -934,17 +934,17 @@ abstract class RouteArchitect
      */
     public function getSequence(): ?RouteArchitectSequenceEntry
     {
-        return self::$sequences->getSequence($this);
+        return self::$sequences->getSequence($this->getClassname(), $this->getSequencesGroupName());
     }
 
     /**
-     * Determines whether the entry of this instance exists.
+     * Determines whether the sequence entry exists.
      *
      * @return bool
      */
     public function hasSequence(): bool
     {
-        return self::$sequences->hasSequence($this);
+        return self::$sequences->hasSequence($this->getClassname(), $this->getSequencesGroupName());
     }
 
     /**
