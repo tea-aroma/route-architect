@@ -148,7 +148,7 @@ class RouteArchitectContext
      */
     public function addPrefix(string $prefix): static
     {
-        $this->prefix .= ( $this->view ? RouteArchitectConfig::URL_DELIMITER->getConfig() : '' ) . $prefix;
+        $this->prefix .= ( $this->prefix ? RouteArchitectConfig::URL_DELIMITER->getConfig() : '' ) . $prefix;
 
         return $this;
     }
