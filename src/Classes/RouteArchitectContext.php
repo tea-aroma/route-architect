@@ -50,6 +50,40 @@ class RouteArchitectContext
     }
 
     /**
+     * Clones the current instance.
+     *
+     * @return $this
+     */
+    public function clone(): RouteArchitectContext
+    {
+        $context = clone $this;
+
+        $context->setTrace($this->getTrace(true));
+
+        return $context;
+    }
+
+    /**
+     * Merges the given 'RouteArchitect' instance.
+     *
+     * @param RouteArchitect $routeArchitect
+     *
+     * @return $this
+     */
+    public function mergeRouteArchitect(RouteArchitect $routeArchitect): static
+    {
+        $this->addName($routeArchitect->getName());
+
+        $this->addView($routeArchitect->getView());
+
+        $this->addPrefix($routeArchitect->getPrefix());
+
+        $this->addTrace($routeArchitect);
+
+        return $this;
+    }
+
+    /**
      * Gets the last instance of execution trace.
      *
      * @return RouteArchitect|null
@@ -163,6 +197,20 @@ class RouteArchitectContext
     public function getTrace(bool $isClone = false): Collection
     {
         return $isClone ? (clone $this->trace) : $this->trace;
+    }
+
+    /**
+     * Sets the given execution trace.
+     *
+     * @param Collection $trace
+     *
+     * @return $this
+     */
+    public function setTrace(Collection $trace): static
+    {
+        $this->trace = $trace;
+
+        return $this;
     }
 
     /**
