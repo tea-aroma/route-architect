@@ -199,7 +199,7 @@ abstract class RouteArchitect
      */
     public function register(): void
     {
-        $this->context = $this->contextProcessing($this->calledRouteArchitect);
+        $this->contextProcessing($this->calledRouteArchitect);
 
         $this->sequencesGroupNameProcessing($this->calledRouteArchitect);
 
@@ -1040,13 +1040,11 @@ abstract class RouteArchitect
     /**
      * Gets the execution context.
      *
-     * @param bool $isClone
-     *
      * @return RouteArchitectContext
      */
-    public function getContext(bool $isClone = false): RouteArchitectContext
+    public function getContext(): RouteArchitectContext
     {
-        return $isClone ? ( clone $this->context ) : $this->context;
+        return $this->context;
     }
 
     /**
@@ -1054,15 +1052,13 @@ abstract class RouteArchitect
      *
      * @param RouteArchitect|null $routeArchitect
      *
-     * @return RouteArchitectContext
+     * @return void
      */
-    protected function contextProcessing(?self $routeArchitect): RouteArchitectContext
+    protected function contextProcessing(?self $routeArchitect): void
     {
-        $context = $routeArchitect?->getContext(true) ?? new RouteArchitectContext();
+        $this->context = $routeArchitect ? $routeArchitect->getContext()->clone() : new RouteArchitectContext();
 
-        $context->addTrace($this);
-
-        return $context;
+        $this->context->mergeRouteArchitect($this);
     }
 
     /**
