@@ -948,13 +948,25 @@ abstract class RouteArchitect
     }
 
     /**
-     * Gets the group name of the sequences.
+     * Gets the group name of the sequences by optional the 'RouteArchitect' instance.
+     *
+     * @param RouteArchitect|null $routeArchitect
      *
      * @return class-string<RouteArchitect>|null
      */
-    public function getSequencesGroupName(): ?string
+    public function getSequencesGroupName(?RouteArchitect $routeArchitect): ?string
     {
-        return $this->sequencesGroupName;
+        if ($this->hasSequencesGroupName())
+        {
+            return $this->sequencesGroupName;
+        }
+
+        if ($this->isSequencesGroupNameModeEveryGroup() && $this->isGroup())
+        {
+            return $this->getClassname();
+        }
+
+        return $routeArchitect?->getClassname() ?? $this->getClassname();
     }
 
     /**
@@ -972,6 +984,26 @@ abstract class RouteArchitect
     }
 
     /**
+     * Determines whether the group name of the sequences exists.
+     *
+     * @return bool
+     */
+    public function hasSequencesGroupName(): bool
+    {
+        return !empty($this->sequencesGroupName);
+    }
+
+    /**
+     * Determines whether the group name mode of the sequences is 'every-group'.
+     *
+     * @return bool
+     */
+    public function isSequencesGroupNameModeEveryGroup(): bool
+    {
+        return RouteArchitectConfig::SEQUENCES_GROUP_NAME_MODE->getConfig() === RouteArchitectSequencesGroupNameModes::EVERY_GROUP->value;
+    }
+
+    /**
      * Handles the process of the group name of the sequences.
      *
      * @param RouteArchitect|null $routeArchitect
@@ -980,9 +1012,7 @@ abstract class RouteArchitect
      */
     protected function sequencesGroupNameProcessing(?RouteArchitect $routeArchitect): static
     {
-        $isEveryGroup = RouteArchitectConfig::SEQUENCES_GROUP_NAME_MODE->getConfig() === RouteArchitectSequencesGroupNameModes::EVERY_GROUP->value;
-
-        $this->sequencesGroupName ??= $isEveryGroup && $this->isGroup() ? $this::getClassname() : $routeArchitect->sequencesGroupName ?? $routeArchitect->getClassname();
+        $this->sequencesGroupName ??= $this->getSequencesGroupName($routeArchitect);
 
         return $this;
     }
@@ -1008,7 +1038,7 @@ abstract class RouteArchitect
      */
     protected function contextProcessing(?self $routeArchitect): RouteArchitectContext
     {
-        $context = $routeArchitect->getContext(true) ?? new RouteArchitectContext();
+        $context = $routeArchitect?->getContext(true) ?? new RouteArchitectContext();
 
         $context->addTrace($this);
 

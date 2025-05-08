@@ -156,11 +156,13 @@ class RouteArchitectContext
     /**
      * Gets the execution trace.
      *
+     * @param bool $isClone
+     *
      * @return Collection
      */
-    public function getTrace(): Collection
+    public function getTrace(bool $isClone = false): Collection
     {
-        return $this->trace;
+        return $isClone ? (clone $this->trace) : $this->trace;
     }
 
     /**

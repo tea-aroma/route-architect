@@ -89,6 +89,6 @@ readonly class RouteArchitectSequenceEntry
 
         $this->prefix = $context->getPrefix();
 
-        $this->trace = $context->getTrace();
+        $this->trace = $context->getTrace(true);
     }
 }
