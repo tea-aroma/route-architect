@@ -151,7 +151,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ### Added
 
 - Migrated project codebase from `snake_case` to `camelCase`.
-- New `RouteArchitectRegister` trait to manage registration logic.
+- New `RouteArchitectRegisterMode` trait to manage registration logic.
 - New `RouteArchitectRegisterModes` enum to encapsulate registration modes.
 - Added `RouteArchitectRegisterMode` into `RouteArchitect`.
 - New `UNDEFINED_NAMESPACE` and `NO_PHP_FILES` properties in `RouteArchitectErrors`.
@@ -166,3 +166,28 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - Removed unused `variables_to_string`, `get_callable` and `get_closure` methods in `RouteArchitectHelpers`.
 - Removed `mode` property and change logic in `getRegistrationMode()` method in `RouteArchitectScannedEntry`.
+
+## [0.4.0] - 2025-05-08
+
+### Added
+
+- New `sequences`, `sequencesGroupName`, `context` and `calledRouteArchitect` properties in `RouteArchitect`.
+- New `hasSequencesGroupName()`, `isSequencesGroupNameModeEveryGroup()`, `getContext()` and other methods in `RouteArchitect`.
+- New `getSequences()` and `getSequenceEntry()` in `RouteArchitectService`.
+- New `RouteArchitectContext` class for trace management.
+- New `RouteArchitectSequenceEntry` class for per-sequence representation of `RouteArchitect`. 
+- New `sequences_group_name_mode` configuration option and new property to `RouteArchitectConfig`.
+- New `RouteArchitectSequencesGroupNameModes` enum to encapsulate sequences group name modes.
+- New `FindSequenceEntryCallable` callable for finding sequences by names. 
+
+### Changed
+
+- Refactored logic of `Sequences` processing.
+- Refactored logic of `Registrar` processing.
+- Reformatted indentation and updated comments across the project.
+
+### Removed
+
+- Removed unnecessary `RouteArchitectMethodNames` and `RouteArchitectSequenceTypes` enums.
+- Removed `nameSequences` and `viewSequences` properties in `RouteArchitect`.
+- Removed `getRouteName()` and `getViewName()` methods in `RouteArchitectService`.
