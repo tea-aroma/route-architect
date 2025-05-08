@@ -46,6 +46,6 @@ readonly class FindSequenceEntryCallable
      */
     public function __invoke(RouteArchitectSequenceEntry $entry): bool
     {
-        return $this->sequenceName === $entry->sequenceName && (is_null($this->sequenceGroupName) || $this->sequenceGroupName === $entry->sequencesGroupName);
+        return $this->sequenceName === $entry->sequenceName && ( is_null($this->sequenceGroupName) || $this->sequenceGroupName === $entry->sequencesGroupName );
     }
 }

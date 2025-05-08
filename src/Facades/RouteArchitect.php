@@ -2,6 +2,7 @@
 
 namespace TeaAroma\RouteArchitect\Facades;
 
+
 use Illuminate\Support\Facades\Facade;
 use TeaAroma\RouteArchitect\Classes\RouteArchitectSequenceEntry;
 use TeaAroma\RouteArchitect\Classes\RouteArchitectSequences;

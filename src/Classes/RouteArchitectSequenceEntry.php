@@ -27,14 +27,14 @@ readonly class RouteArchitectSequenceEntry
     public string $sequencesGroupName;
 
     /**
-     * The instance of 'RouteArchitect' class.
+     * The instance of 'RouteArchitect' instance.
      *
      * @var RouteArchitect
      */
     public RouteArchitect $routeArchitect;
 
     /**
-     * The previously called instance of 'RouteArchitect' class.
+     * The previously called instance of 'RouteArchitect' instance.
      *
      * @var RouteArchitect|null
      */

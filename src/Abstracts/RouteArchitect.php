@@ -24,6 +24,7 @@ abstract class RouteArchitect
 {
     use RouteArchitectRegisterMode;
 
+
     /**
      * The unique identifier.
      *

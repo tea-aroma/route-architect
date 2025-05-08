@@ -41,7 +41,7 @@ class RouteArchitectSequences
     /**
      * Gets the sequence entry by the given sequence names.
      *
-     * @param class-string<RouteArchitect> $sequenceName
+     * @param class-string<RouteArchitect>      $sequenceName
      * @param class-string<RouteArchitect>|null $sequenceGroupName
      *
      * @return RouteArchitectSequenceEntry|null

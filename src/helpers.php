@@ -3,7 +3,8 @@
 use TeaAroma\RouteArchitect\Services\RouteArchitectService;
 
 
-if (! function_exists('route_architect')) {
+if (! function_exists('route_architect'))
+{
     /**
      * Gets the 'RouteArchitectService' instance.
      *

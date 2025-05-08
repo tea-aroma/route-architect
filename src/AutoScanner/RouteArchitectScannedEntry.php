@@ -15,6 +15,7 @@ class RouteArchitectScannedEntry
 {
     use RouteArchitectRegisterMode;
 
+
     /**
      * The instance of 'RouteArchitect'.
      *

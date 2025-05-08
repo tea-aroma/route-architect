@@ -47,7 +47,7 @@ class RouteArchitectService
      */
     public function register(string $namespace): void
     {
-        (new $namespace())->register();
+        ( new $namespace() )->register();
     }
 
     /**
