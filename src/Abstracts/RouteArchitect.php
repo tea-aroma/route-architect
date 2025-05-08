@@ -1018,6 +1018,26 @@ abstract class RouteArchitect
     }
 
     /**
+     * Gets the previously called 'RouteArchitect' instance.
+     *
+     * @return RouteArchitect|null
+     */
+    public function getCalledRouteArchitect(): ?RouteArchitect
+    {
+        return $this->calledRouteArchitect;
+    }
+
+    /**
+     * Determines whether the previously called 'RouteArchitect' instance exists.
+     *
+     * @return bool
+     */
+    public function hasCalledRouteArchitect(): bool
+    {
+        return !is_null($this->calledRouteArchitect);
+    }
+
+    /**
      * Gets the execution context.
      *
      * @param bool $isClone
