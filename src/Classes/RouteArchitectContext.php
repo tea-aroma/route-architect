@@ -100,7 +100,7 @@ class RouteArchitectContext
      */
     public function getPenultimateTrace(): ?RouteArchitect
     {
-        return $this->trace->skip(1)->last();
+        return $this->trace->get($this->trace->count() - 2);
     }
 
     /**
@@ -222,12 +222,6 @@ class RouteArchitectContext
      */
     public function addTrace(RouteArchitect $routeArchitect): static
     {
-        $this->addName($routeArchitect->getName());
-
-        $this->addView($routeArchitect->getView());
-
-        $this->addPrefix($routeArchitect->getPrefix());
-
         $this->trace->push($routeArchitect);
 
         return $this;
