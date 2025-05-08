@@ -75,9 +75,9 @@ readonly class RouteArchitectSequenceEntry
     {
         $this->routeArchitect = $routeArchitect;
 
-        $context = $routeArchitect->getContext();
+        $this->calledRouteArchitect = $routeArchitect->getCalledRouteArchitect();
 
-        $this->calledRouteArchitect = $context->getPenultimateTrace();
+        $context = $routeArchitect->getContext();
 
         $this->sequenceName = $routeArchitect->getClassname();
 
@@ -89,6 +89,6 @@ readonly class RouteArchitectSequenceEntry
 
         $this->prefix = $context->getPrefix();
 
-        $this->trace = $context->getTrace(true);
+        $this->trace = $context->getTrace();
     }
 }
