@@ -954,7 +954,7 @@ abstract class RouteArchitect
      *
      * @return class-string<RouteArchitect>|null
      */
-    public function getSequencesGroupName(?RouteArchitect $routeArchitect): ?string
+    public function getSequencesGroupName(?RouteArchitect $routeArchitect = null): ?string
     {
         if ($this->hasSequencesGroupName())
         {
